@@ -1,0 +1,13 @@
+{
+    "name": "bibo/mvc",
+    "description": "MVC Structure",
+    "type": "Project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bibo",
+            "email": "shady_fan@abv.bg"
+        }
+    ],
+    "require": {}
+}
