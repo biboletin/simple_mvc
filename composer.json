@@ -1,13 +1,21 @@
 {
-    "name": "bibo/mvc",
-    "description": "MVC Structure",
-    "type": "Project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "bibo",
-            "email": "shady_fan@abv.bg"
-        }
-    ],
-    "require": {}
+  "name": "bibo/mvc",
+  "description": "MVC Structure",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "bibo",
+      "email": "shady_fan@abv.bg"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "app/helpers/functions.php"
+    ]
+  }
 }
