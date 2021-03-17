@@ -5,10 +5,18 @@ namespace App;
 /**
  * Router class
  */
-class Router
+final class Router
 {
     public function __construct()
     {
         //
+    }
+
+    private function getUrl()
+    {
+    }
+
+    public function run()
+    {
     }
 }
