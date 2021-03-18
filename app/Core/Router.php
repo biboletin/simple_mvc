@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Core;
 
 /**
  * Router class
@@ -14,9 +14,11 @@ final class Router
 
     private function getUrl()
     {
+        //
     }
 
     public function run()
     {
+        //
     }
 }

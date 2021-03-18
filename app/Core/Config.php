@@ -2,7 +2,7 @@
 /**
  *
  */
-namespace App\Config;
+namespace App\Core;
 
 /**
  * Class Config
@@ -16,7 +16,7 @@ class Config
      */
     public static function get($search = null)
     {
-        $config = include __DIR__ . '/config.php';
+        $config = include __DIR__ . '/../../config.php';
         $parts = explode('.', $search);
 
         foreach ($parts as $part) {
