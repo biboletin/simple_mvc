@@ -5,6 +5,5 @@
 
     use App\Core\Router;
 
-
     $route = new Router();
 

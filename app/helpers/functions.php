@@ -4,7 +4,6 @@
  */
 use App\Core\Config;
 
-
 /**
  * @param null $param
  * @return string
@@ -22,5 +21,4 @@ function config($param = null): String
  */
 function assets($path = '')
 {
-
 }

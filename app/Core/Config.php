@@ -14,7 +14,7 @@ class Config
      * @param string|null $search
      * @return string
      */
-    public static function get($search = null)
+    public static function get($search = null): String
     {
         $config = include __DIR__ . '/../../config.php';
         $parts = explode('.', $search);
