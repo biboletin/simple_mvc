@@ -6,7 +6,7 @@ namespace App\Core;
 
 /**
  * Class Config
- * @package App
+ * @package app
  */
 class Config
 {

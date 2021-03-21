@@ -8,7 +8,12 @@ Easy and simple for usage
 ```bash
 git clone https://github.com/biboletin/mvc.git
 ```
-
+```bash
+cd /path/to/public
+```
+```bash
+php -S localhost:8000
+```
 ## Usage
 Missing
 
