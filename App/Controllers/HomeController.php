@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
+use Core\View;
 
 class HomeController extends Controller
 {
@@ -12,6 +13,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        return 'da';
+        return View::set('home');
     }
 }

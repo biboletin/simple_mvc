@@ -1,23 +1,40 @@
 <?php
 
 namespace Core;
+
 use \App\Controllers\HomeController;
+
 /**
  * Router class
  */
 class Router
 {
-    private $defaultController;
-    private $defaultMethod;
-    private $params;
+    /**
+     * @var string
+     */
+    private string $controllerName;
+    /**
+     * @var array
+     */
+    private array $params;
+    /**
+     * @var string
+     */
+    private string $defaultMethod;
 
+    /**
+     * Router constructor.
+     */
     public function __construct()
     {
-        $this->defaultController = 'HomeController';
+        $this->controllerName = 'Home';
         $this->defaultMethod = 'index';
         $this->params = [];
     }
 
+    /**
+     * @return array|false|string[]
+     */
     private function getUrl()
     {
         if (isset($_SERVER['REQUEST_URI'])) {
@@ -29,22 +46,36 @@ class Router
         return [];
     }
 
+    /**
+     *
+     */
     public function run()
     {
 //        $url = $this->getUrl();
         $url = !empty(array_filter(explode('/', $_SERVER['REQUEST_URI'])))
-                ? explode('/', $_SERVER['REQUEST_URI']) : ['/'];
-        if ($url[0] === '/') {
+                ? array_filter(explode('/', $_SERVER['REQUEST_URI'])) : ['/'];
+
+        if (isset($url[0])) {
             $controller = new HomeController();
-            error_log($controller->index());
-//
-//            $controller = (new $this->defaultController);
-//            $method = $this->defaultMethod;
-//            error_log("$controller()->$method()");
-//            return $controller()->$method();
+            $method = 'index';
+        } else {
+            $controller = $url[1];
+            $this->controllerName = ucfirst($controller);
+            unset($url[1]);
+            $method = $url[2];
+            unset($url[2]);
+            $params = $url;
         }
-        var_dump($url);
 
+        if (!file_exists(__DIR__ . '/../App/Controllers/' . $this->controllerName . 'Controller.php')) {
+            http_response_code(404);
+            die('No such controller!');
+        }
+        if (!method_exists($controller, $method)) {
+            http_response_code(404);
+            die('No such action!');
+        }
 
+        $controller->$method();
     }
 }
