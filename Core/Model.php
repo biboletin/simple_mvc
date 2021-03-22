@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace Core;
 
 /**
  * Model class
