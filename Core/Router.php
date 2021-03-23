@@ -33,17 +33,36 @@ class Router
     }
 
     /**
-     * @return array|false|string[]
+     * @return array
      */
-    private function getUrl()
+    private function parseURL(): array
     {
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $trimUrl = rtrim($_SERVER['REQUEST_URI'], '/');
-            $filterURL = filter_var($trimUrl, FILTER_SANITIZE_URL);
-            return !empty(array_filter(explode('/', $filterURL))) ?
-                explode('/', $filterURL) : ['/'];
+        $url = isset($_GET['url']) ? $_GET['url'] : '/';
+        $params = [];
+        $parse = rtrim($url, '/');
+        $explode = explode('/', $parse);
+
+        if (!isset($explode[1]) && !empty($explode[0])) {
+            $this->defaultMethod = $explode[0];
         }
-        return [];
+
+        if (isset($explode[1])) {
+            $this->controllerName = $explode[0];
+            $this->defaultMethod = $explode[1];
+        }
+
+        if (isset($explode[2])) {
+            $params = $explode[2];
+        }
+
+        $controller = $this->suffixController($this->controllerName);
+        $method = $this->defaultMethod;
+
+        return [
+            'controller' => $controller,
+            'method' => $method,
+            'params' => $params,
+        ];
     }
 
     /**
@@ -51,31 +70,27 @@ class Router
      */
     public function run()
     {
-//        $url = $this->getUrl();
-        $url = !empty(array_filter(explode('/', $_SERVER['REQUEST_URI'])))
-                ? array_filter(explode('/', $_SERVER['REQUEST_URI'])) : ['/'];
-
-        if (isset($url[0])) {
-            $controller = new HomeController();
-            $method = 'index';
-        } else {
-            $controller = $url[1];
-            $this->controllerName = ucfirst($controller);
-            unset($url[1]);
-            $method = $url[2];
-            unset($url[2]);
-            $params = $url;
+        $url = $this->parseURL();
+        if (!empty($url)) {
+            $controller = $url['controller'];
+            $method = $url['method'];
+            $params = $url['params'];
+            return (new $controller)->$method($params);
         }
+    }
 
-        if (!file_exists(__DIR__ . '/../App/Controllers/' . $this->controllerName . 'Controller.php')) {
-            http_response_code(404);
-            die('No such controller!');
-        }
-        if (!method_exists($controller, $method)) {
-            http_response_code(404);
-            die('No such action!');
-        }
+    /**
+     * @param string $controllerName
+     *
+     * @return string
+     */
+    private function suffixController($controllerName = ''): string
+    {
+        return ucfirst(trim($controllerName)) . 'Controller';
+    }
 
-        $controller->$method();
+    private function checkController($controller) {
+        $ctrl = $this->suffixController($controller);
+        return (bool) file_exists(__DIR__ . '/../App/Controllers/' . $ctrl . '.php');
     }
 }

@@ -6,13 +6,14 @@ use Core\View;
 
 class HomeController extends Controller
 {
-
+    private $view;
     public function __construct()
     {
+        $this->view = new View();
     }
 
     public function index()
     {
-        return View::set('home');
+        return $this->view->set('home');
     }
 }
