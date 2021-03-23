@@ -2,8 +2,6 @@
 
 namespace Core;
 
-use \App\Controllers\HomeController;
-
 /**
  * Router class
  */
@@ -85,7 +83,8 @@ class Router
             $method = $url['method'];
             $params = $url['params'];
 
-            return call_user_func_array([$controller, $method], $params);
+            $controller='App\Controllers\\'.$controller;
+            return (new $controller())->$method($params);
 
         }
     }
