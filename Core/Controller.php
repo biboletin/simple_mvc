@@ -7,4 +7,10 @@ namespace Core;
  */
 class Controller
 {
+    private string $directory;
+
+    public function __construct()
+    {
+        $this->directory = __DIR__ . '/../App/Controllers/';
+    }
 }

@@ -6,4 +6,10 @@ namespace Core;
  */
 class Model
 {
+    private string $directory;
+
+    public function __construct()
+    {
+        $this->directory = __DIR__ . '/../App/Models/';
+    }
 }

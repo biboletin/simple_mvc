@@ -22,6 +22,8 @@ class Router
      */
     private string $defaultMethod;
 
+    private array $routes;
+
     /**
      * Router constructor.
      */
@@ -30,6 +32,12 @@ class Router
         $this->controllerName = 'Home';
         $this->defaultMethod = 'index';
         $this->params = [];
+        $this->routes = [];
+    }
+
+    public function add($route, $action)
+    {
+        $this->routes[$route] = $action;
     }
 
     /**
@@ -71,12 +79,20 @@ class Router
     public function run()
     {
         $url = $this->parseURL();
+
         if (!empty($url)) {
             $controller = $url['controller'];
             $method = $url['method'];
             $params = $url['params'];
-            return (new $controller)->$method($params);
+
+            return call_user_func_array([$controller, $method], $params);
+
         }
+    }
+
+    public function init()
+    {
+        //
     }
 
     /**
