@@ -92,9 +92,14 @@ class Router
             $params = $url['params'];
 
             $controller = 'App\Controllers\\' . $controller;
+            if (!class_exists($controller, true)) {
+                http_response_code(404);
+                (new View())->set('404', $controller);
+                exit;
+            }
             if (!method_exists($controller, $method)) {
                 http_response_code(404);
-                (new View())->set('404', $method . ' not found!');
+                (new View())->set('404', $method);
                 exit;
             }
             return (new $controller())->$method($params);

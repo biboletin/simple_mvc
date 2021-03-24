@@ -12,11 +12,9 @@
 Home page
 <br>
 <?php
-echo '<pre>' . print_r($data, true) . '</pre>';
-echo $data[0];
-echo config('app.name');
+    echo '<pre>' . print_r($data, true) . '</pre>';
 ?>
 
-<script src="js/index.js"></script>
+<script src="<?php echo assets('js/index.js')?>"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ use Core\View;
 class Controller
 {
     /**
-     * @var object|\Core\View
+     * @var object|Core\View
      */
     public object $view;
     /**

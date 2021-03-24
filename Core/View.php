@@ -20,16 +20,32 @@ class View
     }
 
     /**
-     * @param string $view
-     * @param null   $data
+     * @param string $viewName
+     * @param array   $data
+     *
+     * @return string
      */
-    public function set($view = 'home', $data = null)
+    public function set($viewName = '404', $data = null): string
     {
-        if (!file_exists($this->viewDirectory . $view . '.php')) {
+        $view = $this->parseView($viewName);
+error_log($view . '.php');
+        if (!file_exists($view . '.php')) {
+error_log('here 1');
             include $this->viewDirectory . '404.php';
             exit;
         }
-        include $this->viewDirectory . $view . '.php';
+error_log('here 2');
+        include $view . '.php';
         exit;
+    }
+
+    /**
+     * @param null $view
+     *
+     * @return string
+     */
+    private function parseView($view = null): string
+    {
+        return $this->viewDirectory . implode('/', explode('.', $view));
     }
 }

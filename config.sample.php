@@ -2,6 +2,19 @@
 
 return [
     /**
+     * Application
+     */
+    'app' => [
+        /**
+         * Set App name
+         */
+        'name' => 'App',
+        /**
+         * Set base url
+         */
+        'url' => 'http://localhost/',
+    ],
+    /**
      * MySQL connection
      */
     'mysql' => [
@@ -36,7 +49,7 @@ return [
         /**
          * Charset
          */
-        'charset' => ''
+        'charset' => '',
     ],
     /**
      * Session

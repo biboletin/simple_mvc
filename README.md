@@ -20,7 +20,9 @@ composer update
 ```bash
 cd /path/to/project/public
 ```
-
+```bash
+copy/paste/rename config.sample.php to config.php
+```
 ## Variant 1
 ```bash
 php -S localhost:8000

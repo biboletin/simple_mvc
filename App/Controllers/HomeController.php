@@ -31,7 +31,8 @@ class HomeController extends Controller
     public function index()
     {
         $data = $this->model->getCategories();
-        return $this->view->set('home', $data);
+
+        return $this->view->set('site.home', $data);
     }
 
     /**
