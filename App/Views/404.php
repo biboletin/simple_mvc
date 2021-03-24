@@ -1,1 +1,3 @@
-Page not found!
+<h1>
+    <?php echo $data; ?>
+</h1>

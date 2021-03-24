@@ -2,7 +2,7 @@
 /**
  * Helper functions
  */
-use App\Core\Config;
+use Core\Config;
 
 /**
  * @param null $param

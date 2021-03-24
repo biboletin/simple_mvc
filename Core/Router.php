@@ -2,6 +2,7 @@
 
 namespace Core;
 
+
 /**
  * Router class
  */
@@ -20,6 +21,9 @@ class Router
      */
     private string $defaultMethod;
 
+    /**
+     * @var array
+     */
     private array $routes;
 
     /**
@@ -33,6 +37,10 @@ class Router
         $this->routes = [];
     }
 
+    /**
+     * @param $route
+     * @param $action
+     */
     public function add($route, $action)
     {
         $this->routes[$route] = $action;
@@ -83,12 +91,20 @@ class Router
             $method = $url['method'];
             $params = $url['params'];
 
-            $controller='App\Controllers\\'.$controller;
+            $controller = 'App\Controllers\\' . $controller;
+            if (!method_exists($controller, $method)) {
+                http_response_code(404);
+                (new View())->set('404', $method . ' not found!');
+                exit;
+            }
             return (new $controller())->$method($params);
 
         }
     }
 
+    /**
+     *
+     */
     public function init()
     {
         //
@@ -104,7 +120,13 @@ class Router
         return ucfirst(trim($controllerName)) . 'Controller';
     }
 
-    private function checkController($controller) {
+    /**
+     * @param $controller
+     *
+     * @return bool
+     */
+    private function checkController($controller)
+    {
         $ctrl = $this->suffixController($controller);
         return (bool) file_exists(__DIR__ . '/../App/Controllers/' . $ctrl . '.php');
     }
