@@ -80,7 +80,9 @@ class Router
     }
 
     /**
+     * Initialize routes without DB
      *
+     * @return mixed
      */
     public function run()
     {
@@ -108,7 +110,7 @@ class Router
     }
 
     /**
-     *
+     * Initialize routes from DB
      */
     public function init()
     {
