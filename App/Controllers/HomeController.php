@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use Core\View;
 use \App\Models\HomeModel;
 
 /**
@@ -13,10 +12,8 @@ use \App\Models\HomeModel;
 class HomeController extends Controller
 {
     /**
-     * @var object|View
+     * @var object|HomeModel
      */
-    private object $view;
-
     private object $model;
 
     /**
@@ -24,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->view = new View();
+        parent::__construct();
         $this->model = new HomeModel();
     }
 

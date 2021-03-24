@@ -1,12 +1,16 @@
 <?php
 
 namespace Core;
-
+use Core\View;
 /**
  * Controller class
  */
 class Controller
 {
+    /**
+     * @var object|\Core\View
+     */
+    public object $view;
     /**
      * @var string
      */
@@ -18,5 +22,6 @@ class Controller
     public function __construct()
     {
         $this->directory = __DIR__ . '/../App/Controllers/';
+        $this->view = new View();
     }
 }
