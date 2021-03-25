@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
+use Core\Request;
 use \App\Models\HomeModel;
 
 /**
@@ -40,6 +41,14 @@ class HomeController extends Controller
      */
     public function about()
     {
+
         return $this->view->set('site.about');
+    }
+
+    public function ajax(Request $request)
+    {
+
+        $data = $request->post('name');
+        return $this->view->set('site.home', $data);
     }
 }

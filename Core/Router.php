@@ -25,16 +25,21 @@ class Router
      * @var array
      */
     private array $routes;
+    /**
+     * @var array
+     */
+    private object $request;
 
     /**
      * Router constructor.
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->controllerName = 'Home';
         $this->defaultMethod = 'index';
         $this->params = [];
         $this->routes = [];
+        $this->request = $request;
     }
 
     /**
@@ -51,22 +56,27 @@ class Router
      */
     private function parseURL(): array
     {
-        $url = isset($_GET['url']) ? $_GET['url'] : '/';
-        $params = [];
+        $url = $this->request->get('url')
+            ? $this->request->get('url')
+            : '/';
+//        $params = [];
+        $params = $this->request;
         $parse = rtrim($url, '/');
-        $explode = explode('/', $parse);
+        $trimmed = array_map('trim', explode('/', $parse));
+        $stripped = array_map('strip_tags', $trimmed);
+        $link = $stripped;
 
-        if (!isset($explode[1]) && !empty($explode[0])) {
-            $this->defaultMethod = $explode[0];
+        if (!isset($link[1]) && !empty($link[0])) {
+            $this->defaultMethod = $link[0];
         }
 
-        if (isset($explode[1])) {
-            $this->controllerName = $explode[0];
-            $this->defaultMethod = $explode[1];
+        if (isset($link[1])) {
+            $this->controllerName = $link[0];
+            $this->defaultMethod = $link[1];
         }
 
-        if (isset($explode[2])) {
-            $params = $explode[2];
+        if (isset($link[2])) {
+            $params = $link[2];
         }
 
         $controller = $this->suffixController($this->controllerName);

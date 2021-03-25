@@ -11,9 +11,17 @@
 <body>
 Home page
 <br>
+<form method="post">
+    <input type="text" name="index" id="index">
+    <input type="button" name="btn" id="btn" value="submit">
+</form>
+
 <?php
+    echo $data;
     echo '<pre>' . print_r($data, true) . '</pre>';
 ?>
+
+
 
 <script src="<?php echo assets('js/index.js')?>"></script>
 </body>

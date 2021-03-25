@@ -61,9 +61,14 @@ function ajax(options, func) {
     }
 }
 
-ajax({
-    'method': 'POST',
-    'url': '/home/index'
-}, function(response){
-    alert(response);
-});
+document.getElementById('btn').onclick = function () {
+    ajax({
+        'method': 'POST',
+        'url': '/home/ajax',
+        data: {
+            'name': document.getElementById('index').value
+        }
+    }, function(response){
+        console.log(response);
+    });
+};
