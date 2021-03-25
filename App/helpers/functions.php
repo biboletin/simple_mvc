@@ -4,6 +4,7 @@
  */
 use Core\Config;
 use Core\View;
+
 /**
  * @param null $param
  * @return string

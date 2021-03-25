@@ -5,7 +5,9 @@
  * @namespace Core
  */
 namespace Core;
+
 use Core\View;
+
 /**
  * Controller class
  */
