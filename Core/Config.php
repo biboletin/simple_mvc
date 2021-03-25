@@ -16,7 +16,7 @@ class Config
      */
     public static function get($search = null): String
     {
-        $config = include __DIR__ . '/../../config.php';
+        $config = include __DIR__ . '/../config.php';
         $parts = explode('.', $search);
 
         foreach ($parts as $part) {

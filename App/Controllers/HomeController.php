@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use Core\Controller;
 use Core\Request;
+use Core\Session;
 use \App\Models\HomeModel;
 
 /**
@@ -22,6 +23,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+
         parent::__construct();
         $this->model = new HomeModel();
     }
@@ -32,7 +34,6 @@ class HomeController extends Controller
     public function index()
     {
         $data = $this->model->getCategories();
-
         return $this->view->set('site.home', $data);
     }
 
