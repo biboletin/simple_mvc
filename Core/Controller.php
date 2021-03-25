@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Main controller class
+ *
+ * @namespace Core
+ */
 namespace Core;
 use Core\View;
 /**
@@ -12,6 +16,8 @@ class Controller
      */
     public object $view;
     /**
+     * Controllers base directory
+     *
      * @var string
      */
     private string $directory;

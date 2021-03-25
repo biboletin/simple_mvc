@@ -7,6 +7,8 @@ namespace Core;
 class View
 {
     /**
+     * Views base directory
+     *
      * @var string
      */
     private string $viewDirectory;
@@ -20,8 +22,9 @@ class View
     }
 
     /**
+     *
      * @param string $viewName
-     * @param array   $data
+     * @param null   $data
      *
      * @return string
      */

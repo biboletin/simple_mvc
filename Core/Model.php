@@ -1,4 +1,9 @@
 <?php
+/**
+ * Main Model class
+ *
+ * @namespace Core
+ */
 namespace Core;
 
 /**
@@ -7,6 +12,8 @@ namespace Core;
 class Model
 {
     /**
+     * Models base directory
+     *
      * @var string
      */
     private string $directory;

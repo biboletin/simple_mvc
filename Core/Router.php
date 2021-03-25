@@ -4,7 +4,9 @@ namespace Core;
 
 
 /**
- * Router class
+ * Class Router
+ *
+ * @package Core
  */
 class Router
 {
@@ -52,6 +54,8 @@ class Router
     }
 
     /**
+     * Parse url params
+     *
      * @return array
      */
     private function parseURL(): array
@@ -59,7 +63,6 @@ class Router
         $url = $this->request->get('url')
             ? $this->request->get('url')
             : '/';
-//        $params = [];
         $params = $this->request;
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
@@ -102,8 +105,8 @@ class Router
             $controller = $url['controller'];
             $method = $url['method'];
             $params = $url['params'];
-
             $controller = 'App\Controllers\\' . $controller;
+
             if (!class_exists($controller, true)) {
                 http_response_code(404);
                 (new View())->set('404', $controller);
@@ -114,9 +117,10 @@ class Router
                 (new View())->set('404', $method);
                 exit;
             }
-            return (new $controller())->$method($params);
 
+            return (new $controller())->$method($params);
         }
+//?
     }
 
     /**
@@ -128,6 +132,8 @@ class Router
     }
 
     /**
+     * Add Controller after controller(first url param) name
+     *
      * @param string $controllerName
      *
      * @return string
@@ -138,6 +144,8 @@ class Router
     }
 
     /**
+     * Checks if controller exists
+     *
      * @param $controller
      *
      * @return bool

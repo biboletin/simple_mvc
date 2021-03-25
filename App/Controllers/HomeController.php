@@ -49,6 +49,7 @@ class HomeController extends Controller
     {
 
         $data = $request->post('name');
-        return $this->view->set('site.home', $data);
+        echo $data;
+//        return $this->view->set('site.home', $data);
     }
 }

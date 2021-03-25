@@ -19,6 +19,6 @@ class AdminController extends Controller
 
     public function login()
     {
-        return $this->view->set('login');
+        return $this->view->set('admin.login');
     }
 }

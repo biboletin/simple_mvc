@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Core;
 
 
@@ -39,6 +37,9 @@ class Request
     }
 
     /**
+     * Get $_GET values
+     * Sanitize values
+     *
      * @param null $key
      *
      * @return mixed|string
@@ -51,6 +52,9 @@ class Request
     }
 
     /**
+     * Get $_POST values
+     * Sanitize values
+     *
      * @param null $key
      *
      * @return mixed|string
