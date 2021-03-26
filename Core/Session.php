@@ -22,6 +22,8 @@
 
 namespace Core;
 
+use Core\Config;
+
 /**
  * Session handler class
  * for more secure session variables
@@ -37,53 +39,52 @@ class Session
     /**
      * Instantiating session handler
      *
-     * @var boolean
+     * @var bool
      */
-    private static bool $instance;
+    private static $instance;
 
     /**
+     */
+
+    /**
+     * Session constructor.
+     *
      * Set up private properties
      * Instantiate session
      */
     private function __construct()
     {
-        self::secure();
-
-        if (!empty(Config::get('session.save_path'))) {
-            if (!file_exists(Config::get('session.save_path'))) {
-                mkdir(Config::get('session.save_path'));
-            }
-            ini_set('session.save_path', Config::get('session.save_path'));
-        }
-
-        if (!empty(Config::get('session.max_life_time'))) {
-            ini_set('session.gc_maxlifetime', Config::get('session.max_life_time'));
-        }
-
-        self::$instance = session_start();
+        self::$instance = session_start([
+            'save_path' => Config::get('session.save_path'),
+            'gc_maxlifetime' => Config::get('session.max_life_time'),
+            'sid_length' => Config::get('session.sid_length'),
+            'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
+        ]);
     }
 
     /**
      * Calling Session::start()
      * instead session_start()
      *
-     * @return boolean
+     * @return boolean|Session
      */
     public static function start()
     {
         if (!self::$instance) {
             self::$instance = new self();
         }
-
         return self::$instance;
     }
 
     /**
      * Adding session element
      *
+     * @param null $sessionKey
+     * @param null $sessionValue
+     *
      * @return string
      */
-    public static function set($sessionKey = null, $sessionValue = null)
+    public static function set($sessionKey = null, $sessionValue = null): string
     {
         if (!self::$instance) {
             die("Session is not initialized!");
@@ -102,9 +103,11 @@ class Session
     /**
      * Get session element by key
      *
-     * @return string
+     * @param null $sessionKey
+     *
+     * @return mixed
      */
-    public static function get($sessionKey = null)
+    public static function get($sessionKey = null): string
     {
         if (empty($sessionKey)) {
             die("Session::get() parameter is empty or null!");
@@ -117,9 +120,11 @@ class Session
     /**
      * Remove session element
      *
+     * @param $sessionKey
+     *
      * @return void
      */
-    public static function del($sessionKey)
+    public static function del($sessionKey): void
     {
         if (empty($sessionKey)) {
             die("Session::del() parameter is empty or null!");
@@ -133,29 +138,12 @@ class Session
      *
      * @return void
      */
-    public static function close()
+    public static function close(): void
     {
         session_unset();
         session_destroy();
         session_write_close();
         setcookie(session_name(), '', 0, '/');
         self::$instance = false;
-    }
-
-    /**
-     * Securing session
-     *
-     * @return void
-     */
-    public static function secure()
-    {
-        ini_set('session.use_only_cookies', '1');
-
-        if (phpversion() < '5.3.0') {
-            ini_set('session.hash_function', 1);
-        } else {
-            ini_set('session.hash_function', 'sha256');
-            ini_set('session.hash_bits_per_character', 5);
-        }
     }
 }

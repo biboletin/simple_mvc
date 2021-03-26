@@ -26,6 +26,7 @@ class HomeController extends Controller
 
         parent::__construct();
         $this->model = new HomeModel();
+        Session::start();
     }
 
     /**
@@ -34,7 +35,8 @@ class HomeController extends Controller
     public function index()
     {
         $data = $this->model->getCategories();
-        return $this->view->set('site.home', $data);
+        $user = Session::set('user', 'admin');
+        return $this->view->set('site.home', [$data, $user]);
     }
 
     /**
@@ -52,5 +54,10 @@ class HomeController extends Controller
         $data = $request->post('name');
         echo $data;
 //        return $this->view->set('site.home', $data);
+    }
+
+    public function __destruct()
+    {
+        Session::close();
     }
 }
