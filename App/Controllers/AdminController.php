@@ -5,6 +5,11 @@ use Core\Controller;
 
 //use \App\Models\AdminModel;
 
+/**
+ * Class AdminController
+ *
+ * @package App\Controllers
+ */
 class AdminController extends Controller
 {
 
@@ -18,6 +23,9 @@ class AdminController extends Controller
         parent::__construct();
     }
 
+    /**
+     * @return mixed
+     */
     public function login()
     {
         return $this->view->set('admin.login');

@@ -3,17 +3,30 @@ namespace App\Models;
 
 use Core\Model;
 
+/**
+ * Class HomeModel
+ *
+ * @package App\Models
+ */
 class HomeModel extends Model
 {
 
-    public function getCategories()
+    /**
+     * HomeModel constructor.
+     */
+    public function __construct()
     {
-//        $result = $this->sql('select * from categories');
-//        return $result;
-        return [
-            'Men',
-            'Women',
-            'Kids',
-        ];
+        parent::__construct();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        $result = $this->query('select * from users');
+        while ($row = $result->fetch_assoc()) {
+            return $row;
+        }
     }
 }

@@ -117,6 +117,11 @@ class Session
         return $_SESSION[$key];
     }
 
+    public static function has($key = null): bool
+    {
+        return isset($_SESSION[$key]);
+    }
+
     /**
      * Remove session element
      *

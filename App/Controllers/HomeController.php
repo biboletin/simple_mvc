@@ -34,7 +34,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = $this->model->getCategories();
+        $data = $this->model->getUsers();
         $user = Session::set('user', 'admin');
         return $this->view->set('site.home', [$data, $user]);
     }

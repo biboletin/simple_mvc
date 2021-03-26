@@ -6,10 +6,11 @@
  */
 namespace Core;
 
+use Core\Config;
 /**
  * Model class
  */
-class Model
+class Model extends \MySQLi
 {
     /**
      * Models base directory
@@ -24,5 +25,14 @@ class Model
     public function __construct()
     {
         $this->directory = __DIR__ . '/../App/Models/';
+        parent::__construct(
+            Config::get('mysql.host'),
+            Config::get('mysql.user'),
+            Config::get('mysql.password'),
+            Config::get('mysql.database'),
+            Config::get('mysql.port'),
+        );
     }
+
+
 }
