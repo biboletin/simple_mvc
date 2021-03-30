@@ -44,7 +44,6 @@ class HomeController extends Controller
      */
     public function about()
     {
-
         return $this->view->set('site.about');
     }
 

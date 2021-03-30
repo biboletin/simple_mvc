@@ -2,6 +2,8 @@
 namespace App\Controllers;
 
 use Core\Controller;
+use Core\Request;
+use Core\Session;
 
 //use \App\Models\AdminModel;
 
@@ -30,4 +32,13 @@ class AdminController extends Controller
     {
         return $this->view->set('admin.login');
     }
+
+    public function auth(Request $request)
+    {
+        $data = $request->post('username');
+//error_log($data);
+error_log(print_r($request, true));
+    }
+
+
 }

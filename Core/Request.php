@@ -2,6 +2,7 @@
 namespace Core;
 
 use Core\Csrf;
+
 /**
  * Class Request
  *
@@ -23,6 +24,12 @@ class Request
      */
     public function __construct()
     {
+        foreach ($_GET as $keys => $value) {
+            $_GET[trim(strip_tags($keys))] = trim(strip_tags($value));
+        }
+        foreach ($_POST as $keys => $value) {
+            $_POST[trim(strip_tags($keys))] = trim(strip_tags($value));
+        }
         if (!empty(array_filter($_GET))) {
             $_GET = array_map('trim', $_GET);
             $_GET = array_map('strip_tags', $_GET);
@@ -33,6 +40,7 @@ class Request
             $_POST = array_map('strip_tags', $_POST);
             $this->post = filter_input_array(INPUT_POST, $_POST);
         }
+
         header('X-CSRF-Token: ' . Csrf::generate());
         header('X-XSRF-TOKEN: ' . Csrf::generate());
     }

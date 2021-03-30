@@ -7,6 +7,7 @@
 namespace Core;
 
 use Core\Config;
+
 /**
  * Model class
  */
@@ -33,6 +34,4 @@ class Model extends \MySQLi
             Config::get('mysql.port'),
         );
     }
-
-
 }

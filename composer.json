@@ -9,7 +9,10 @@
       "email": "shady_fan@abv.bg"
     }
   ],
-  "require": {},
+  "minimum-stability": "dev",
+  "require": {
+      "php": ">=7.4.12"
+  },
   "autoload": {
     "psr-4": {
       "Core\\": "Core/",

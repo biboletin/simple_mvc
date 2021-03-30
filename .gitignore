@@ -4,3 +4,4 @@ node_modules/
 .git
 config.php
 composer.lock
+tmp/*
