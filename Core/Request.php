@@ -24,21 +24,15 @@ class Request
      */
     public function __construct()
     {
-        foreach ($_GET as $keys => $value) {
-            $_GET[trim(strip_tags($keys))] = trim(strip_tags($value));
-        }
-        foreach ($_POST as $keys => $value) {
-            $_POST[trim(strip_tags($keys))] = trim(strip_tags($value));
-        }
         if (!empty(array_filter($_GET))) {
             $_GET = array_map('trim', $_GET);
             $_GET = array_map('strip_tags', $_GET);
-            $this->get = filter_input_array(INPUT_GET, $_GET);
+            $this->get = $_GET;
         }
         if (!empty(array_filter($_POST))) {
             $_POST = array_map('trim', $_POST);
             $_POST = array_map('strip_tags', $_POST);
-            $this->post = filter_input_array(INPUT_POST, $_POST);
+            $this->post = $_POST;
         }
 
         header('X-CSRF-Token: ' . Csrf::generate());

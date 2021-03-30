@@ -28,5 +28,6 @@ class HomeModel extends Model
         while ($row = $result->fetch_assoc()) {
             return $row;
         }
+        return [];
     }
 }

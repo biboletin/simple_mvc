@@ -41,7 +41,7 @@ class Router
         $this->defaultMethod = 'index';
         $this->params = [];
         $this->routes = [];
-        $this->request = $request;
+        $this->request = new $request();
     }
 
     /**

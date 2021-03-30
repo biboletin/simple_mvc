@@ -35,9 +35,9 @@ class AdminController extends Controller
 
     public function auth(Request $request)
     {
-        $data = $request->post('username');
-//error_log($data);
-error_log(print_r($request, true));
+        $username = $request->post('username');
+        $password = $request->post('password');
+
     }
 
 

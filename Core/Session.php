@@ -151,4 +151,8 @@ class Session
         setcookie(session_name(), '', 0, '/');
         self::$instance = false;
     }
+
+    public function flash($message)
+    {
+    }
 }
