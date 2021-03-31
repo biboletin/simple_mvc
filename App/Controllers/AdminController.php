@@ -15,8 +15,9 @@ use App\Models\UserModel;
  */
 class AdminController extends Controller
 {
-
-//    private object $model;
+    /**
+     * @var object|Hash
+     */
     private object $hash;
 
     /**
@@ -29,6 +30,8 @@ class AdminController extends Controller
     }
 
     /**
+     * Login view
+     *
      * @return mixed
      */
     public function login()
@@ -36,26 +39,48 @@ class AdminController extends Controller
         return $this->view->set('admin.login');
     }
 
+    /**
+     * User login authorization
+     *
+     * @param Request $request
+     */
     public function auth(Request $request)
     {
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
         $result = $user->validateUser($username);
-error_log($this->hash->hashit($password));
-error_log(print_r($result, true));
+
         if ($this->hash->verify($password, $result['password'])) {
             echo 'logged in';
         } else {
             echo 'logged out';
         }
-
     }
 
-    public function register()
+    /**
+     * Registration view
+     *
+     * @return string
+     */
+    public function register(): string
     {
         return $this->view->set('admin.register');
     }
 
+    /**
+     * Insert new user
+     *
+     * @param Request $request
+     */
+    public function registerUser(Request $request)
+    {
+        $user = new UserModel();
 
+        $user->createNewUser(
+            $request->post('username'),
+            $request->post('email'),
+            $this->hash->hashit($request->post('password'))
+        );
+    }
 }

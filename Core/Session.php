@@ -57,7 +57,6 @@ final class Session
             Config::get('session.domain'),
             Config::get('session.secure'),
             Config::get('session.cookie_httponly')
-
         );
         self::$instance = session_start([
             'save_path' => Config::get('session.save_path'),

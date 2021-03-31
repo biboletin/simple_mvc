@@ -4,6 +4,7 @@
 namespace Core;
 
 use Core\Config;
+
 /**
  * Class Hash
  *
@@ -54,7 +55,6 @@ class Hash
      */
     public function verify($string = null, $hash = null): bool
     {
-        return password_verify($string, $hash) ? 'true' : 'false';
+        return password_verify($string, $hash);
     }
-
 }

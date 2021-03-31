@@ -1,3 +1,6 @@
+<?php
+use Core\Csrf;
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,33 +16,37 @@
 
 
 <div class="container register-form">
-    <div class="form">
-        <div class="note">
-            <p>This is a simpleRegister Form made using Boostrap.</p>
+    <form action="/admin/registerUser" method="post">
+        <input type="hidden" name="token" value="<?php echo Csrf::generate();?>">
+        <div class="form">
+            <div class="note">
+                <p>Register</p>
+            </div>
+
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Username" name="username"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Email" name="email"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password" name="password"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password"/>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" id="subform" class="btn btnSubmit" value="Register">
+            </div>
         </div>
 
-        <div class="form-content">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Name *" value=""/>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Phone Number *" value=""/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Password *" value=""/>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Confirm Password *" value=""/>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btnSubmit">Submit</button>
-        </div>
-    </div>
+    </form>
 </div>
 
 </body>
