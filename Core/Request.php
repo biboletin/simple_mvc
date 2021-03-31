@@ -8,7 +8,7 @@ use Core\Csrf;
  *
  * @package Core
  */
-class Request
+final class Request
 {
     /**
      * @var array|mixed
@@ -35,8 +35,8 @@ class Request
             $this->post = $_POST;
         }
 
-        header('X-CSRF-Token: ' . Csrf::generate());
-        header('X-XSRF-TOKEN: ' . Csrf::generate());
+        header('X-CSRF-Token: ' . Csrf::generateXCSRF());
+        header('X-XSRF-TOKEN: ' . Csrf::generateXXCSRF());
     }
 
     /**
@@ -64,6 +64,15 @@ class Request
      */
     public function post($key = null): string
     {
+/*
+        $requestToken = $this->post['token'];
+        if (!isset($this->post['token'])) {
+            die('token is not set!');
+        }
+        if (isset($requestToken) && (Csrf::check($requestToken) === false)) {
+            die('Invalid request!');
+        }
+*/
         return isset($this->post[trim(strip_tags($key))])
             ? $this->post[trim(strip_tags($key))]
             : '';

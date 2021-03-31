@@ -34,7 +34,7 @@ use Core\Config;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://github.com/biboletin/php
  */
-class Session
+final class Session
 {
     /**
      * Instantiating session handler
@@ -44,9 +44,6 @@ class Session
     private static $instance;
 
     /**
-     */
-
-    /**
      * Session constructor.
      *
      * Set up private properties
@@ -54,11 +51,19 @@ class Session
      */
     private function __construct()
     {
+        session_set_cookie_params(
+            Config::get('session.max_life_time'),
+            Config::get('session.path'),
+            Config::get('session.domain'),
+            Config::get('session.secure'),
+            Config::get('session.cookie_httponly')
+
+        );
         self::$instance = session_start([
             'save_path' => Config::get('session.save_path'),
-            'gc_maxlifetime' => Config::get('session.max_life_time'),
             'sid_length' => Config::get('session.sid_length'),
             'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
+            // 'trans_sid_hosts' => Config::get('session.same_site'),
         ]);
     }
 
@@ -70,7 +75,7 @@ class Session
      */
     public static function start()
     {
-        if (!self::$instance) {
+        if (!isset(self::$instance)) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -87,11 +92,11 @@ class Session
     public static function set($sessionKey = null, $sessionValue = null): string
     {
         if (!self::$instance) {
-            die("Session is not initialized!");
+            die('Session is not initialized!');
         }
 
         if ((empty($sessionKey)) || (empty($sessionValue))) {
-            die("Session::set() parameters are empty or null!");
+            die(__METHOD__ . ' parameters are empty or null!');
         }
 
         $key = strip_tags(trim(addslashes($sessionKey)));
@@ -109,11 +114,11 @@ class Session
      */
     public static function get($sessionKey = null): string
     {
-        if (empty($sessionKey)) {
-            die("Session::get() parameter is empty or null!");
+        if (($sessionKey === null) || ($sessionKey === '')) {
+            die(__METHOD__ . ' parameter is empty or null!');
         }
-
         $key = strip_tags(trim(stripslashes($sessionKey)));
+
         return $_SESSION[$key];
     }
 
@@ -131,8 +136,8 @@ class Session
      */
     public static function del($sessionKey): void
     {
-        if (empty($sessionKey)) {
-            die("Session::del() parameter is empty or null!");
+        if (($sessionKey === null) || ($sessionKey === '')) {
+            die(__METHOD__ . ' parameter is empty or null!');
         }
         $key = strip_tags(trim($sessionKey));
         unset($_SESSION[$key]);
@@ -148,7 +153,7 @@ class Session
         session_unset();
         session_destroy();
         session_write_close();
-        setcookie(session_name(), '', 0, '/');
+//        setcookie(session_name(), '', 0, '/');
         self::$instance = false;
     }
 

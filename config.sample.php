@@ -45,7 +45,7 @@ return [
         /**
          * Database name
          */
-        'database' => '',
+        'database' => 'test',
         /**
          * Collation
          */
@@ -79,6 +79,24 @@ return [
          * Defaults to $_SERVER['HTTP_HOST']
          */
         'trans_sid_hosts' => $_SERVER['HTTP_HOST'],
+        /**
+         *
+         */
+        'cookie_httponly' => 1,
+        /**
+         *
+         */
+        'secure' => 1,
+        /**
+         *
+         * Lax
+         * Strict
+         */
+        'same_site' => 'lax',
+        /**
+         * Domain
+         */
+        'domain' => 'localhost',
     ],
     /**
      * Security
@@ -88,5 +106,13 @@ return [
          * Random bytes
          */
         'random_bytes' => 32,
+        /**
+         *
+         */
+         'algorithm' => PASSWORD_DEFAULT,
+        /**
+         *
+         */
+         'cost' => 12,
     ],
 ];

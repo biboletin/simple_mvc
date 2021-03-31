@@ -8,7 +8,7 @@ namespace Core;
  * Class Config
  * @package app
  */
-class Config
+final class Config
 {
     /**
      * @param string|null $search

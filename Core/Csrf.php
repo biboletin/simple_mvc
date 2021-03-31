@@ -3,15 +3,15 @@
 
 namespace Core;
 
-use Core\Session;
 use Core\Config;
+use Core\Session;
 
 /**
  * Class Csrf
  *
  * @package Core
  */
-class Csrf
+final class Csrf
 {
     /**
      * Generates CSRF token
@@ -28,6 +28,22 @@ class Csrf
         );
     }
 
+    public function generateXCSRF(): string
+    {
+        Session::start();
+        return Session::set(
+            'x_csrf_token',
+            bin2hex(random_bytes(Config::get('security.random_bytes')))
+        );
+    }
+    public function generateXXCSRF(): string
+    {
+        Session::start();
+        return Session::set(
+            'x_xsrf_token',
+            bin2hex(random_bytes(Config::get('security.random_bytes')))
+        );
+    }
     /**
      * Validate token
      * @param null $token

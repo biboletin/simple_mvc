@@ -26,7 +26,7 @@
         <h3 class="text-center">Login</h3>
         <!-- Login Form -->
         <form name="" action="/admin/auth" method="post">
-            <input type="hidden" name="_token" id="_token" value="<?php echo Csrf::generate();?>">
+            <input type="hidden" name="token" id="token" value="<?php echo Csrf::generate();?>">
             <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username">
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
             <input type="submit" class="fadeIn fourth" value="Log In">
