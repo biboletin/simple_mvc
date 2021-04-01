@@ -82,5 +82,19 @@ class AdminController extends Controller
             $request->post('email'),
             $this->hash->hashit($request->post('password'))
         );
+        Session::start();
+        Session::set('loggedIn', true);
+        return $request->redirect('admin/dashboard', 404);
+    }
+
+    /**
+     * Dashboard view
+     *
+     * @return string
+     */
+    public function dashboard(): string
+    {
+        Session::start();
+        return $this->view->set('admin.dashboard');
     }
 }

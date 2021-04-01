@@ -48,4 +48,9 @@ class View
     {
         return $this->viewDirectory . implode('/', explode('.', $view));
     }
+
+    public function __destruct()
+    {
+        $this->viewDirectory = '';
+    }
 }

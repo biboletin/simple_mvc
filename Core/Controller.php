@@ -32,4 +32,10 @@ class Controller
         $this->directory = __DIR__ . '/../App/Controllers/';
         $this->view = new View();
     }
+
+    public function __destruct()
+    {
+        $this->directory = '';
+        unset($this->view);
+    }
 }

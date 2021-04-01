@@ -155,4 +155,13 @@ class Router
         $ctrl = $this->suffixController($controller);
         return (bool) file_exists(__DIR__ . '/../App/Controllers/' . $ctrl . '.php');
     }
+
+    public function __destruct()
+    {
+        $this->controllerName = 'Home';
+        $this->defaultMethod = 'index';
+        $this->params = [];
+        $this->routes = [];
+        unset($this->request);
+    }
 }

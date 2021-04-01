@@ -77,4 +77,23 @@ final class Request
             ? $this->post[trim(strip_tags($key))]
             : '';
     }
+
+    /**
+     * Redirect to page/view
+     *
+     * @param null $page
+     * @param int  $code
+     */
+    public function redirect($page = null, $code = 200)
+    {
+        $url = Config::get('app.url') . $page;
+        header('Location: ' . $url, $code);
+        exit;
+    }
+
+    public function __destruct()
+    {
+        $this->get = [];
+        $this->post = [];
+    }
 }

@@ -34,4 +34,10 @@ class Model extends \MySQLi
             Config::get('mysql.port'),
         );
     }
+
+    public function __destruct()
+    {
+        $this->directory = '';
+        parent::close();
+    }
 }

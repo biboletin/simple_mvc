@@ -109,18 +109,23 @@ final class Session
      *
      * @param null $sessionKey
      *
-     * @return mixed
+     * @return false|mixed
      */
-    public static function get($sessionKey = null): string
+    public static function get($sessionKey = null)
     {
         if (($sessionKey === null) || ($sessionKey === '')) {
             die(__METHOD__ . ' parameter is empty or null!');
         }
-        $key = strip_tags(trim(stripslashes($sessionKey)));
 
-        return $_SESSION[$key];
+        $key = strip_tags(trim(stripslashes($sessionKey)));
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : false;
     }
 
+    /**
+     * @param null $key
+     *
+     * @return bool
+     */
     public static function has($key = null): bool
     {
         return isset($_SESSION[$key]);
@@ -152,7 +157,7 @@ final class Session
         session_unset();
         session_destroy();
         session_write_close();
-//        setcookie(session_name(), '', 0, '/');
+        setcookie(session_name(), '', 0, '/');
         self::$instance = false;
     }
 
