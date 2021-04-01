@@ -1,13 +1,14 @@
 <?php
+
 use Core\Session;
 
 Session::start();
 
-var_dump($_SESSION);
+//var_dump($_SESSION);
 if (Session::has('loggedIn') && boolval(Session::get('loggedIn')) === true) {
-    echo 'User is logged in!';
+//    echo 'User is logged in!';
 } else {
-    echo 'User is not logged in! need to redirect!';
+//    echo 'User is not logged in! need to redirect!';
 }
 
 
