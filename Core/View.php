@@ -32,7 +32,7 @@ class View
     {
         $view = $this->parseView($viewName);
         if (!file_exists($view . '.php')) {
-            include $this->viewDirectory . '404.php';
+            include $this->viewDirectory . 'error.php';
             exit;
         }
         include $view . '.php';

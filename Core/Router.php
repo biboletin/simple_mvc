@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Redirect;
+
 /**
  * Class Router
  *
@@ -100,7 +102,6 @@ class Router
     public function run()
     {
         $url = $this->parseURL();
-
         if (!empty($url)) {
             $controller = $url['controller'];
             $method = $url['method'];
@@ -108,14 +109,10 @@ class Router
             $controller = 'App\Controllers\\' . $controller;
 
             if (!class_exists($controller, true)) {
-                http_response_code(404);
-                (new View())->set('404', $controller);
-                exit;
+                return Redirect::to('error', 404);
             }
             if (!method_exists($controller, $method)) {
-                http_response_code(404);
-                (new View())->set('404', $method);
-                exit;
+                return Redirect::to('error', 404);
             }
 
             return (new $controller())->$method($params);

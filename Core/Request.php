@@ -2,6 +2,7 @@
 namespace Core;
 
 use Core\Csrf;
+use Core\Redirect;
 
 /**
  * Class Request
@@ -64,27 +65,14 @@ final class Request
      */
     public function post($key = null): string
     {
-/*
-        $requestToken = isset($this->post['token']) ?: false;
-
-        if (!isset($this->post['token'])) {
-            $this->redirect('error');
-        }
-        if (isset($requestToken) && (Csrf::check($requestToken) === false)) {
-            $this->redirect('error');
-            die('Invalid request!');
-        }
-*/
         $token = null;
         if (isset($this->post['token'])) {
             $token = $this->post['token'];
         }
-error_log($token);
         if (($token === null) || ($token === false)) {
-error_log('redirected');
-            $this->redirect('error');
+            $this->redirect('error', 400);
         }
-error_log('not redirected');
+
         return isset($this->post[trim(strip_tags($key))])
             ? $this->post[trim(strip_tags($key))]
             : '';
@@ -96,11 +84,9 @@ error_log('not redirected');
      * @param null $page
      * @param int  $code
      */
-    public function redirect($page = null, $code = 200)
+    public function redirect($page = null, $code = 200): string
     {
-        $url = Config::get('app.url') . $page;
-        header('Location: ' . $url, $code);
-        exit;
+        return Redirect::to($page, $code);
     }
 
     public function __destruct()

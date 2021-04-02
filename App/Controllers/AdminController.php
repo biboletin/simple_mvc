@@ -46,7 +46,7 @@ class AdminController extends Controller
      */
     public function auth(Request $request)
     {
-error_log(print_r($request, true));
+        error_log(print_r($request, true));
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
@@ -85,7 +85,7 @@ error_log(print_r($request, true));
         );
         Session::start();
         Session::set('loggedIn', true);
-        return $request->redirect('admin/dashboard', 404);
+        return $request->redirect('admin/dashboard');
     }
 
     /**
