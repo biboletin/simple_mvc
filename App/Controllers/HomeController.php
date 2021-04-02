@@ -47,14 +47,6 @@ class HomeController extends Controller
         return $this->view->set('site.about');
     }
 
-    public function ajax(Request $request)
-    {
-
-        $data = $request->post('name');
-        echo $data;
-//        return $this->view->set('site.home', $data);
-    }
-
     public function __destruct()
     {
         Session::close();

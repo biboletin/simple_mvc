@@ -65,14 +65,26 @@ final class Request
     public function post($key = null): string
     {
 /*
-        $requestToken = $this->post['token'];
+        $requestToken = isset($this->post['token']) ?: false;
+
         if (!isset($this->post['token'])) {
-            die('token is not set!');
+            $this->redirect('error');
         }
         if (isset($requestToken) && (Csrf::check($requestToken) === false)) {
+            $this->redirect('error');
             die('Invalid request!');
         }
 */
+        $token = null;
+        if (isset($this->post['token'])) {
+            $token = $this->post['token'];
+        }
+error_log($token);
+        if (($token === null) || ($token === false)) {
+error_log('redirected');
+            $this->redirect('error');
+        }
+error_log('not redirected');
         return isset($this->post[trim(strip_tags($key))])
             ? $this->post[trim(strip_tags($key))]
             : '';

@@ -25,12 +25,12 @@ copy/paste/rename config.sample.php to config.php
 cd /path/to/project/public
 ```
 
-**Variant 1**
+**Variant 1**  
 Use ```php``` built-in server
 ```bash
 php -S localhost:8000
 ```
-**Variant 2**
+**Variant 2**  
 Create virtual host and go to 
 ```bash
 http://hostname
@@ -42,9 +42,10 @@ Works without hardcoded routes.
 * If URL is https://localhost/ControllerName/MethodName:
     * If MethodName doesn`t exist redirects to 404 page with "MethodName not found!"
 
-##Important!
-Use https!
-```phpregexp
+## Important!
+Use https!  
+
+```php
         /**
          * Set base url
          * Change to https for better use

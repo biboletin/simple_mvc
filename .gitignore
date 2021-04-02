@@ -5,3 +5,4 @@ node_modules/
 config.php
 composer.lock
 tmp/*
+*.bak
