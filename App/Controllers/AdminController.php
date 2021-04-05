@@ -46,16 +46,17 @@ class AdminController extends Controller
      */
     public function auth(Request $request)
     {
-        error_log(print_r($request, true));
+// error_log(print_r($request, true));
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
         $result = $user->validateUser($username);
-
+// error_log('USER: ' . $username);
         if ($this->hash->verify($password, $result['password'])) {
             echo 'logged in';
         } else {
             echo 'logged out';
+            return $request->redirect('admin/login');
         }
     }
 
@@ -97,5 +98,10 @@ class AdminController extends Controller
     {
         Session::start();
         return $this->view->set('admin.dashboard');
+    }
+
+    public function about(): string
+    {
+        return $this->view->set('admin.about');
     }
 }

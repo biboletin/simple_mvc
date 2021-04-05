@@ -69,8 +69,10 @@ final class Request
         if (isset($this->post['token'])) {
             $token = $this->post['token'];
         }
-        if (($token === null) || ($token === false) || (!Csrf::check($token))) {
+
+        if (($token === null) || ($token === false) || (Csrf::check($token))) {
             $this->redirect('error', 400);
+            exit;
         }
         
 
