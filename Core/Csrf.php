@@ -59,7 +59,11 @@ final class Csrf
      */
     public static function check($token = null): bool
     {
-        return (Session::get('token') === $token);
+        if ((Session::get('token') === $token)) {
+            Session::del('token');
+            return true;
+        }
+        return false;
     }
 
     /**
