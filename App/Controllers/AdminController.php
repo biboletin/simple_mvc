@@ -5,6 +5,7 @@ use Core\Controller;
 use Core\Request;
 use Core\Session;
 use Core\Hash;
+use Core\Redirect;
 
 use App\Models\UserModel;
 
@@ -44,16 +45,17 @@ class AdminController extends Controller
      *
      * @param Request $request
      */
-    public function auth(Request $request)
+    public function auth(Request $request): string
     {
-// error_log(print_r($request, true));
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
         $result = $user->validateUser($username);
-// error_log('USER: ' . $username);
+
         if ($this->hash->verify($password, $result['password'])) {
-            echo 'logged in';
+//session start
+            return $request->redirect('admin/dashboard');
+//            return $this->view->set('admin.dashboard');
         } else {
             echo 'logged out';
             return $request->redirect('admin/login');
@@ -102,6 +104,18 @@ class AdminController extends Controller
 
     public function about(): string
     {
-        return $this->view->set('admin.about');
+        return $this->view->set('admin.about.index');
+    }
+
+    public function categories(): string
+    {
+        return $this->view->set('admin.categories.index');
+    }
+
+    public function exit(): string
+    {
+        Session::start();
+        Session::close();
+        return Redirect::to('/');
     }
 }

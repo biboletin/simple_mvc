@@ -62,7 +62,6 @@ final class Session
             'save_path' => Config::get('session.save_path'),
             'sid_length' => Config::get('session.sid_length'),
             'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
-            // 'trans_sid_hosts' => Config::get('session.same_site'),
         ]);
     }
 
@@ -116,7 +115,6 @@ final class Session
         if (($sessionKey === null) || ($sessionKey === '')) {
             die(__METHOD__ . ' parameter is empty or null!');
         }
-
         $key = strip_tags(trim(stripslashes($sessionKey)));
         return isset($_SESSION[$key]) ? $_SESSION[$key] : false;
     }

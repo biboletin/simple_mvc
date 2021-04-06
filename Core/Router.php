@@ -141,18 +141,8 @@ class Router
     }
 
     /**
-     * Checks if controller exists
      *
-     * @param $controller
-     *
-     * @return bool
      */
-    private function checkController($controller)
-    {
-        $ctrl = $this->suffixController($controller);
-        return (bool) file_exists(__DIR__ . '/../App/Controllers/' . $ctrl . '.php');
-    }
-
     public function __destruct()
     {
         $this->controllerName = 'Home';

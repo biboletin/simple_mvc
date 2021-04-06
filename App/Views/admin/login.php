@@ -15,19 +15,11 @@
 <body>
 <div class="wrapper fadeInDown">
     <div id="formContent">
-        <!-- Tabs Titles -->
-
-        <!-- Icon -->
-<!--
-        <div class="fadeIn first">
-            <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
-        </div>
--->
         <h3 class="text-center">Login</h3>
         <!-- Login Form -->
         <form name="" action="/admin/auth" method="post">
             <input type="hidden" name="token" id="token" value="<?php echo Csrf::generate();?>">
-            <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username">
+            <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username" required autofocus>
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
             <input type="submit" class="fadeIn fourth" value="Log In">
         </form>
