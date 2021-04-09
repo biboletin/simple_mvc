@@ -43,7 +43,7 @@ class Router
         $this->defaultMethod = 'index';
         $this->params = [];
         $this->routes = [];
-        $this->request = new $request();
+        $this->request = $request;
     }
 
     /**
@@ -109,15 +109,15 @@ class Router
             $controller = 'App\Controllers\\' . $controller;
 
             if (!class_exists($controller, true)) {
-                return Redirect::to('error', 404);
+                Redirect::to('error', 404);
             }
             if (!method_exists($controller, $method)) {
-                return Redirect::to('error', 404);
+                Redirect::to('error', 404);
             }
 
             return (new $controller())->$method($params);
         }
-//?
+        //?
     }
 
     /**

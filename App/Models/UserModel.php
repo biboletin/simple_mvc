@@ -27,7 +27,7 @@ class UserModel extends Model
      */
     public function validateUser($username = null)
     {
-        $sql = "select id, password from users where `name` = ?";
+        $sql = "select id, password from users where `username` = ?";
         $stmt  = $this->prepare($sql);
         $stmt->bind_param('s', $username);
         $stmt->execute();
@@ -42,7 +42,7 @@ class UserModel extends Model
      */
     public function createNewUser($username = null, $email = null, $password = null)
     {
-        $sql = "insert into users(`name`, `email`, `password`) values(?, ?, ?)";
+        $sql = "insert into users(`username`, `email`, `password`) values(?, ?, ?)";
 
         $stmt  = $this->prepare($sql);
         $stmt->bind_param('sss', $username, $email, $password);

@@ -2,8 +2,6 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use Core\Request;
-use Core\Session;
 use \App\Models\HomeModel;
 
 /**
@@ -23,32 +21,30 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-
         parent::__construct();
         $this->model = new HomeModel();
-        Session::start();
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function index()
+    public function index(): string
     {
         $data = $this->model->getUsers();
-        $user = Session::set('user', 'admin');
+        $user = $this->session->set('user', 'admin');
         return $this->view->set('site.home', [$data, $user]);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function about()
+    public function about(): string
     {
         return $this->view->set('site.about');
     }
 
     public function __destruct()
     {
-        Session::close();
+        $this->session->close();
     }
 }

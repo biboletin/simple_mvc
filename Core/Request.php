@@ -1,8 +1,6 @@
 <?php
-namespace Core;
 
-use Core\Csrf;
-use Core\Redirect;
+namespace Core;
 
 /**
  * Class Request
@@ -12,13 +10,18 @@ use Core\Redirect;
 final class Request
 {
     /**
-     * @var array|mixed
+     * @var array
      */
     private array $get;
     /**
-     * @var array|mixed
+     * @var array
      */
     private array $post;
+
+    /**
+     * @var object|Csrf
+     */
+    private object $csrf;
 
     /**
      * Request constructor.
@@ -28,66 +31,61 @@ final class Request
         if (!empty(array_filter($_GET))) {
             $_GET = array_map('trim', $_GET);
             $_GET = array_map('strip_tags', $_GET);
-            $this->get = $_GET;
+            $this->get = (array) $_GET;
         }
         if (!empty(array_filter($_POST))) {
             $_POST = array_map('trim', $_POST);
             $_POST = array_map('strip_tags', $_POST);
-            $this->post = $_POST;
+            $this->post = (array) $_POST;
         }
-
-        header('X-CSRF-Token: ' . Csrf::generateXCSRF());
-        header('X-XSRF-TOKEN: ' . Csrf::generateXXCSRF());
+        $this->csrf = new Csrf(new Session());
+        header('X-CSRF-Token: ' . $this->csrf->generateXCSRF());
+        header('X-XSRF-TOKEN: ' . $this->csrf->generateXXCSRF());
     }
 
     /**
      * Get $_GET values
      * Sanitize values
      *
-     * @param null $key
+     * @param string $key
      *
-     * @return mixed|string
+     * @return string
      */
-    public function get($key = null): string
+    public function get(string $key): string
     {
-        return isset($this->get[trim(strip_tags($key))])
-            ? $this->get[trim(strip_tags($key))]
-            : '';
+        return $this->get[trim(strip_tags($key))] ?? '';
     }
 
     /**
      * Get $_POST values
      * Sanitize values
      *
-     * @param null $key
+     * @param string $key
      *
-     * @return mixed|string
+     * @return string
      */
-    public function post($key = null): string
+    public function post(string $key): string
     {
         $token = null;
         if (isset($this->post['token'])) {
             $token = $this->post['token'];
         }
 
-        if (($token === null) || ($token === false) || (Csrf::check($token))) {
+        if (($token === null) || ($token === false) || ($this->csrf->check($token))) {
             $this->redirect('error', 400);
             exit;
         }
-        
 
-        return isset($this->post[trim(strip_tags($key))])
-            ? $this->post[trim(strip_tags($key))]
-            : '';
+        return $this->post[trim(strip_tags($key))] ?? '';
     }
 
     /**
      * Redirect to page/view
      *
-     * @param null $page
+     * @param string $page
      * @param int  $code
      */
-    public function redirect($page = null, $code = 200): string
+    public function redirect(string $page, int $code = 200)
     {
         return Redirect::to($page, $code);
     }

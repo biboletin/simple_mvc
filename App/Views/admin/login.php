@@ -1,5 +1,6 @@
 <?php
     use Core\Csrf;
+
 ?>
 <!doctype html>
 <html lang="en">

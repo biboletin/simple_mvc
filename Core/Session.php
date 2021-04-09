@@ -7,8 +7,8 @@
  * USE
  * Session::start();
  * Session::set(key, value);
- * Sesion::get(key);
- * Sesion::del(key);
+ * Session::get(key);
+ * Session::del(key);
  * Session::close();
  *
  * PHP Version 7.2
@@ -22,8 +22,6 @@
 
 namespace Core;
 
-use Core\Config;
-
 /**
  * Session handler class
  * for more secure session variables
@@ -36,47 +34,41 @@ use Core\Config;
  */
 final class Session
 {
-    /**
-     * Instantiating session handler
-     *
-     * @var bool
-     */
-    private static $instance;
-
+    private array $session;
     /**
      * Session constructor.
      *
      * Set up private properties
      * Instantiate session
      */
-    private function __construct()
+    public function __construct()
     {
-        session_set_cookie_params(
-            Config::get('session.max_life_time'),
-            Config::get('session.path'),
-            Config::get('session.domain'),
-            Config::get('session.secure'),
-            Config::get('session.cookie_httponly')
-        );
-        self::$instance = session_start([
-            'save_path' => Config::get('session.save_path'),
-            'sid_length' => Config::get('session.sid_length'),
-            'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
-        ]);
-    }
-
-    /**
-     * Calling Session::start()
-     * instead session_start()
-     *
-     * @return boolean|Session
-     */
-    public static function start()
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new self();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start([
+                'save_path' => Config::get('session.save_path'),
+                'sid_length' => Config::get('session.sid_length'),
+                'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
+            ]);
         }
-        return self::$instance;
+        /*
+        [
+                    'save_path' => Config::get('session.save_path'),
+                    'sid_length' => Config::get('session.sid_length'),
+                    'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
+                ]
+        */
+        /*
+                session_set_cookie_params(
+                    Config::get('session.max_life_time'),
+                    Config::get('session.path'),
+                    Config::get('session.domain'),
+                    Config::get('session.secure'),
+                    Config::get('session.cookie_httponly')
+                );
+        */
+        $_SESSION = array_map('trim', $_SESSION);
+        $_SESSION = array_map('strip_tags', $_SESSION);
+        $this->session = $_SESSION;
     }
 
     /**
@@ -87,12 +79,8 @@ final class Session
      *
      * @return string
      */
-    public static function set($sessionKey = null, $sessionValue = null): string
+    public function set($sessionKey = null, $sessionValue = null): string
     {
-        if (!self::$instance) {
-            die('Session is not initialized!');
-        }
-
         if ((empty($sessionKey)) || (empty($sessionValue))) {
             die(__METHOD__ . ' parameters are empty or null!');
         }
@@ -100,23 +88,20 @@ final class Session
         $key = strip_tags(trim(addslashes($sessionKey)));
         $value = strip_tags(trim(addslashes($sessionValue)));
 
-        return $_SESSION[$key] = $value;
+        return $this->session[$key] = $value;
     }
 
     /**
      * Get session element by key
      *
-     * @param null $sessionKey
+     * @param string $sessionKey
      *
-     * @return false|mixed
+     * @return string
      */
-    public static function get($sessionKey = null)
+    public function get(string $sessionKey): string
     {
-        if (($sessionKey === null) || ($sessionKey === '')) {
-            die(__METHOD__ . ' parameter is empty or null!');
-        }
         $key = strip_tags(trim(stripslashes($sessionKey)));
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : false;
+        return $this->session[$key] ?? '';
     }
 
     /**
@@ -124,25 +109,26 @@ final class Session
      *
      * @return bool
      */
-    public static function has($key = null): bool
+    public function has($key = null): bool
     {
-        return isset($_SESSION[$key]);
+        if (isset($this->session[$key])) {
+            return isset($this->session[$key]);
+        }
+        return false;
     }
 
     /**
      * Remove session element
      *
-     * @param $sessionKey
+     * @param string $sessionKey
      *
-     * @return void
+     * @return bool
      */
-    public static function del($sessionKey): void
+    public function del(string $sessionKey): bool
     {
-        if (($sessionKey === null) || ($sessionKey === '')) {
-            die(__METHOD__ . ' parameter is empty or null!');
-        }
         $key = strip_tags(trim($sessionKey));
-        unset($_SESSION[$key]);
+        unset($this->session[$key]);
+        return true;
     }
 
     /**
@@ -150,16 +136,28 @@ final class Session
      *
      * @return void
      */
-    public static function close(): void
+    public function close(): void
     {
-        session_unset();
-        session_destroy();
-        session_write_close();
-        setcookie(session_name(), '', 0, '/');
-        self::$instance = false;
+        /*
+                session_unset();
+                session_destroy();
+                session_write_close();
+                setcookie(session_name(), '', 0, '/');
+        */
     }
 
     public function flash($message)
     {
+    }
+
+    public function __destruct()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_unset();
+        session_destroy();
+        session_write_close();
+        $this->session = [];
     }
 }

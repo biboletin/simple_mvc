@@ -1,5 +1,12 @@
 <?php
-    use Core\Csrf;
+use Core\Csrf;
+use Core\Session;
+
+//Session::start();
+//if (!Session::has('loggedIn') || boolval(Session::get('loggedIn')) !== true) {
+//    \Core\Redirect::to('admin/login');
+//}
+var_dump($_SESSION);
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,11 +24,12 @@
 <div class="content-container">
 <h1 class="text-center">About</h1>
     <div class="container-fluid">
-        <form role="form">
-            <input type="hidden" value="<?php echo Csrf::generate();?>">
+        <form role="form" action="/about/addEditInfo" method="post">
+            <input type="hidden" name="token" id="token" value="<?php echo Csrf::generate();?>">
             <div class="form-group">
-                <textarea class="form-control" rows="3" placeholder="About"></textarea>
+                <textarea name="about" id="about" class="form-control" rows="3" placeholder="About"><?php echo trim($data['about']);?></textarea>
             </div>
+
             <input type="submit" class="btn btn-success" value="Add/Edit">
         </form>
     </div>

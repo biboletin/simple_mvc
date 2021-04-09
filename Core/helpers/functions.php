@@ -6,33 +6,30 @@ use Core\Config;
 use Core\View;
 
 /**
- * @param null $param
+ * @param string $param
  * @return string
  */
-function config($param = null): String
+function config(string $param): string
 {
-    if (($param === null) || ($param === '')) {
-        return '';
-    }
     return Config::get($param);
 }
 
 /**
  * @param string $path
  */
-function assets($path = null)
+function assets(string $path): string
 {
     $url = config('app.url');
     return $url . $path;
 }
 
 /**
- * @param null $view
- * @param null $data
+ * @param string $view
+ * @param array $data
  *
- * @return mixed
+ * @return string
  */
-function view($view = null, $data = null)
+function view(string $view, array $data = []): string
 {
     return (new View())->set($view, $data);
 }

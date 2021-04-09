@@ -2,16 +2,12 @@
 
 use Core\Session;
 
-Session::start();
-
-//var_dump($_SESSION);
-if (Session::has('loggedIn') && boolval(Session::get('loggedIn')) === true) {
-//    echo 'User is logged in!';
-} else {
-//    echo 'User is not logged in! need to redirect!';
-}
-
-
+//Session::start();
+//if (!Session::has('loggedIn') || boolval(Session::get('loggedIn')) !== true) {
+//    \Core\Redirect::to('admin/login');
+//}
+var_dump($_SESSION);
+echo Session::get('loggedIn') ? 'true' : 'false';
 ?>
 <!doctype html>
 <html lang="en">

@@ -1,5 +1,6 @@
 <?php
 use Core\Csrf;
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -17,7 +18,7 @@ use Core\Csrf;
 
 <div class="container register-form">
     <form action="/admin/registerUser" method="post">
-        <input type="hidden" name="token" value="<?php echo Csrf::generate();?>">
+        <input type="hidden" name="token" value="<?php echo (new Csrf())->generate();?>">
         <div class="form">
             <div class="note">
                 <p>Register</p>

@@ -3,8 +3,6 @@
 
 namespace Core;
 
-use Core\View;
-
 /**
  * Class Redirect
  *
@@ -13,15 +11,13 @@ use Core\View;
 class Redirect
 {
     /**
-     * @param null   $page
-     * @param int    $code
-     * @param string $message
-     *
-     * @return string View
+     * @param null $page
+     * @param int  $code
      */
-    public static function to($page = null, $code = 200, $message = ''): string
+    public static function to($page = null, $code = 200): void
     {
         http_response_code($code);
-        return (new View())->set($page, $message);
+        //error_log('Location: ' . config('app.url') . $page);
+        header('Location: ' . config('app.url') . $page);
     }
 }

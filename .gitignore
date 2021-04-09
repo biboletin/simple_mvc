@@ -6,3 +6,7 @@ config.php
 composer.lock
 tmp/*
 *.bak
+*.xml
+*.neon
+*.lock
+.php_cs.cache

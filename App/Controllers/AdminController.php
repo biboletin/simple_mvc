@@ -8,6 +8,7 @@ use Core\Hash;
 use Core\Redirect;
 
 use App\Models\UserModel;
+use App\Models\AboutModel;
 
 /**
  * Class AdminController
@@ -45,7 +46,7 @@ class AdminController extends Controller
      *
      * @param Request $request
      */
-    public function auth(Request $request): string
+    public function auth(Request $request)
     {
         $username = $request->post('username');
         $password = $request->post('password');
@@ -53,7 +54,8 @@ class AdminController extends Controller
         $result = $user->validateUser($username);
 
         if ($this->hash->verify($password, $result['password'])) {
-//session start
+            Session::start();
+            Session::set('loggedIn', true);
             return $request->redirect('admin/dashboard');
 //            return $this->view->set('admin.dashboard');
         } else {
@@ -102,11 +104,20 @@ class AdminController extends Controller
         return $this->view->set('admin.dashboard');
     }
 
+    /**
+     * @return string
+     */
     public function about(): string
     {
-        return $this->view->set('admin.about.index');
+        $about = new AboutModel();
+        $info = $about->getAboutInfo();
+
+        return $this->view->set('admin.about.index', $info);
     }
 
+    /**
+     * @return string
+     */
     public function categories(): string
     {
         return $this->view->set('admin.categories.index');

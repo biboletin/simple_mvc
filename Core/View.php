@@ -2,7 +2,9 @@
 namespace Core;
 
 /**
- * View class
+ * Class View
+ *
+ * @package Core
  */
 class View
 {
@@ -24,27 +26,28 @@ class View
     /**
      *
      * @param string $viewName
-     * @param null   $data
+     * @param array   $data
      *
      * @return string
      */
-    public function set($viewName = '404', $data = null): string
+    public function set(string $viewName = 'error', array $data = []): string
     {
         $view = $this->parseView($viewName);
         if (!file_exists($view . '.php')) {
             include $this->viewDirectory . 'error.php';
             exit;
         }
+
         include $view . '.php';
         exit;
     }
 
     /**
-     * @param null $view
+     * @param string $view
      *
      * @return string
      */
-    private function parseView($view = null): string
+    private function parseView(string $view): string
     {
         return $this->viewDirectory . implode('/', explode('.', $view));
     }

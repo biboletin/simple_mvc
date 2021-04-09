@@ -6,15 +6,13 @@
  */
 namespace Core;
 
-use Core\View;
-
 /**
  * Controller class
  */
 class Controller
 {
     /**
-     * @var object|Core\View
+     * @var object|View
      */
     public object $view;
     /**
@@ -24,6 +22,9 @@ class Controller
      */
     private string $directory;
 
+    public object $session;
+    public object $csrf;
+
     /**
      * Controller constructor.
      */
@@ -31,11 +32,15 @@ class Controller
     {
         $this->directory = __DIR__ . '/../App/Controllers/';
         $this->view = new View();
+        $this->session = new Session();
+        $this->csrf = new Csrf($this->session);
     }
 
     public function __destruct()
     {
         $this->directory = '';
         unset($this->view);
+        unset($this->session);
+        unset($this->csrf);
     }
 }

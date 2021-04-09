@@ -3,8 +3,8 @@
 
 namespace Core;
 
-use Core\Config;
 use Core\Session;
+use Exception;
 
 /**
  * Class Csrf
@@ -13,43 +13,41 @@ use Core\Session;
  */
 final class Csrf
 {
+    private object $session;
+    private int $bytes;
+
+    public function __construct(Session $session)
+    {
+        $this->session = $session;
+        $this->bytes = intval(Config::get('security.random_bytes'));
+    }
+
     /**
      * Generates CSRF token
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function generate(): string
+    public function generate(): string
     {
-        Session::start();
-        return Session::set(
-            'token',
-            bin2hex(random_bytes(Config::get('security.random_bytes')))
-        );
+        return $this->session->set('token', bin2hex(random_bytes($this->bytes)));
     }
 
+    /**
+     * @return string
+     * @throws Exception
+     */
     public function generateXCSRF(): string
     {
-/*
-        Session::start();
-        return Session::set(
-            'x_csrf_token',
-            bin2hex(random_bytes(Config::get('security.random_bytes')))
-        );
-*/
-        return bin2hex(random_bytes(Config::get('security.random_bytes')));
+        return bin2hex(random_bytes($this->bytes));
     }
 
+    /**
+     * @throws Exception
+     */
     public function generateXXCSRF(): string
     {
-/*
-        Session::start();
-        return Session::set(
-            'x_xsrf_token',
-            bin2hex(random_bytes(Config::get('security.random_bytes')))
-        );
-*/
-        return bin2hex(random_bytes(Config::get('security.random_bytes')));
+        return bin2hex(random_bytes($this->bytes));
     }
     /**
      * Validate token
@@ -57,10 +55,10 @@ final class Csrf
      *
      * @return bool
      */
-    public static function check($token = null): bool
+    public function check($token = null): bool
     {
-        if ((Session::get('token') === $token)) {
-            Csrf::del();
+        if ($this->session->get('token') === $token) {
+            $this->del();
             return true;
         }
         return false;
@@ -69,11 +67,15 @@ final class Csrf
     /**
      * Remove/Delete token
      *
-     * @return void
+     * @return bool
      */
-    public static function del(): void
+    public function del(): bool
     {
-        Session::start();
-        Session::del('token');
+        return $this->session->del('token');
+    }
+
+    public function __destruct()
+    {
+        unset($this->session);
     }
 }

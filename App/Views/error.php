@@ -7,11 +7,9 @@ switch (http_response_code()) {
     case 404:
         $error = 'The page you are looking for was not found';
         break;
-    case 500;
+    case 500:
         $error = 'Server error!';
         break;
-    default:
-        $error = 'Unhandled error!';
 }
 ?>
 <!doctype html>
