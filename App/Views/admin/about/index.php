@@ -1,12 +1,6 @@
 <?php
-use Core\Csrf;
-use Core\Session;
-
-//Session::start();
-//if (!Session::has('loggedIn') || boolval(Session::get('loggedIn')) !== true) {
-//    \Core\Redirect::to('admin/login');
-//}
-var_dump($_SESSION);
+    use Core\Csrf;
+    use Core\Session;
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,7 +19,7 @@ var_dump($_SESSION);
 <h1 class="text-center">About</h1>
     <div class="container-fluid">
         <form role="form" action="/about/addEditInfo" method="post">
-            <input type="hidden" name="token" id="token" value="<?php echo Csrf::generate();?>">
+            <input type="hidden" name="token" id="token" value="<?php echo (new Csrf(new Session()))->generate();?>">
             <div class="form-group">
                 <textarea name="about" id="about" class="form-control" rows="3" placeholder="About"><?php echo trim($data['about']);?></textarea>
             </div>
