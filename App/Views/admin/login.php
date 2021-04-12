@@ -1,6 +1,6 @@
 <?php
     use Core\Csrf;
-
+    use \Core\Session;
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,7 +19,7 @@
         <h3 class="text-center">Login</h3>
         <!-- Login Form -->
         <form name="" action="/admin/auth" method="post">
-            <input type="hidden" name="token" id="token" value="<?php echo Csrf::generate();?>">
+            <input type="hidden" name="token" id="token" value="<?php echo (new Csrf(new Session()))->generate();?>">
             <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username" required autofocus>
             <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
             <input type="submit" class="fadeIn fourth" value="Log In">

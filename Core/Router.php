@@ -49,12 +49,15 @@ class Router
     /**
      * @param $route
      * @param $action
+     *
+     * @return void
      */
-    public function add($route, $action)
+/*
+    public function add($route, $action): void
     {
         $this->routes[$route] = $action;
     }
-
+*/
     /**
      * Parse url params
      *
@@ -115,19 +118,23 @@ class Router
                 Redirect::to('error', 404);
             }
 
-            return (new $controller())->$method($params);
+            if ($method !== 'favicon.ico') {
+                return (new $controller())->$method($params);
+            }
         }
-        //?
     }
 
     /**
      * Initialize routes from DB
+     *
+     * @return void
      */
-    public function init()
+/*
+    public function init(): void
     {
         //
     }
-
+*/
     /**
      * Add Controller after controller(first url param) name
      *

@@ -21,11 +21,11 @@ class UserModel extends Model
     }
 
     /**
-     * @param null $username
+     * @param string $username
      *
      * @return array|null
      */
-    public function validateUser($username = null)
+    public function validateUser(string $username)
     {
         $sql = "select id, password from users where `username` = ?";
         $stmt  = $this->prepare($sql);
@@ -34,18 +34,19 @@ class UserModel extends Model
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
-
     /**
-     * @param null $username
-     * @param null $email
-     * @param null $password
+     * @param string $username
+     * @param string $email
+     * @param string $password
+     *
+     * @return bool
      */
-    public function createNewUser($username = null, $email = null, $password = null)
+    public function createNewUser(string $username, string $email, string $password): bool
     {
         $sql = "insert into users(`username`, `email`, `password`) values(?, ?, ?)";
 
         $stmt  = $this->prepare($sql);
         $stmt->bind_param('sss', $username, $email, $password);
-        $stmt->execute();
+        return $stmt->execute();
     }
 }

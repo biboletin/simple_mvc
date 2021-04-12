@@ -43,6 +43,13 @@ class HomeController extends Controller
         return $this->view->set('site.about');
     }
 
+    /**
+     *
+     */
+    public function error(): void
+    {
+        //
+    }
     public function __destruct()
     {
         $this->session->close();

@@ -7,7 +7,7 @@ use Core\Session;
 //    \Core\Redirect::to('admin/login');
 //}
 var_dump($_SESSION);
-echo Session::get('loggedIn') ? 'true' : 'false';
+echo (new Session())->get('loggedIn') ? 'true' : 'false';
 ?>
 <!doctype html>
 <html lang="en">

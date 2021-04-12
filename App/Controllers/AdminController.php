@@ -3,7 +3,6 @@ namespace App\Controllers;
 
 use Core\Controller;
 use Core\Request;
-use Core\Session;
 use Core\Hash;
 use Core\Redirect;
 
@@ -54,8 +53,7 @@ class AdminController extends Controller
         $result = $user->validateUser($username);
 
         if ($this->hash->verify($password, $result['password'])) {
-            Session::start();
-            Session::set('loggedIn', true);
+            $this->session->set('loggedIn', true);
             return $request->redirect('admin/dashboard');
 //            return $this->view->set('admin.dashboard');
         } else {
@@ -88,8 +86,7 @@ class AdminController extends Controller
             $request->post('email'),
             $this->hash->hashit($request->post('password'))
         );
-        Session::start();
-        Session::set('loggedIn', true);
+        $this->session->set('loggedIn', true);
         return $request->redirect('admin/dashboard');
     }
 
@@ -100,7 +97,6 @@ class AdminController extends Controller
      */
     public function dashboard(): string
     {
-        Session::start();
         return $this->view->set('admin.dashboard');
     }
 
@@ -125,8 +121,7 @@ class AdminController extends Controller
 
     public function exit(): string
     {
-        Session::start();
-        Session::close();
+        $this->session->close();
         return Redirect::to('/');
     }
 }

@@ -87,7 +87,7 @@ final class Session
 
         $key = strip_tags(trim(addslashes($sessionKey)));
         $value = strip_tags(trim(addslashes($sessionValue)));
-
+//error_log(print_r($this->session, true));
         return $this->session[$key] = $value;
     }
 
@@ -146,7 +146,7 @@ final class Session
         */
     }
 
-    public function flash($message)
+    public function flash($message): void
     {
     }
 

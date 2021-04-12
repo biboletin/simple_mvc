@@ -26,12 +26,13 @@ class Model extends \MySQLi
     public function __construct()
     {
         $this->directory = __DIR__ . '/../App/Models/';
+        $port = (int) Config::get('mysql.port');
         parent::__construct(
             Config::get('mysql.host'),
             Config::get('mysql.user'),
             Config::get('mysql.password'),
             Config::get('mysql.database'),
-            Config::get('mysql.port'),
+            $port,
         );
     }
 
