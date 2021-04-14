@@ -1,4 +1,5 @@
 vendor/
+.scannerwork/
 node_modules/
 .idea
 .git
@@ -10,3 +11,4 @@ tmp/*
 *.neon
 *.lock
 .php_cs.cache
+sonar-scanner.properties

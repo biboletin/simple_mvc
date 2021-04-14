@@ -52,12 +52,12 @@ class Router
      *
      * @return void
      */
-/*
-    public function add($route, $action): void
-    {
-        $this->routes[$route] = $action;
-    }
-*/
+    /*
+        public function add($route, $action): void
+        {
+            $this->routes[$route] = $action;
+        }
+    */
     /**
      * Parse url params
      *
@@ -118,7 +118,8 @@ class Router
                 Redirect::to('error', 404);
             }
 
-            if ($method !== 'favicon.ico') {
+//            if ($method !== 'favicon.ico') {
+            if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
                 return (new $controller())->$method($params);
             }
         }
@@ -129,12 +130,12 @@ class Router
      *
      * @return void
      */
-/*
-    public function init(): void
-    {
-        //
-    }
-*/
+    /*
+        public function init(): void
+        {
+            //
+        }
+    */
     /**
      * Add Controller after controller(first url param) name
      *

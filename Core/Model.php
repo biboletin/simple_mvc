@@ -1,12 +1,12 @@
 <?php
+
 /**
  * Main Model class
  *
  * @namespace Core
  */
-namespace Core;
 
-use Core\Config;
+namespace Core;
 
 /**
  * Model class
@@ -26,13 +26,12 @@ class Model extends \MySQLi
     public function __construct()
     {
         $this->directory = __DIR__ . '/../App/Models/';
-        $port = (int) Config::get('mysql.port');
         parent::__construct(
             Config::get('mysql.host'),
             Config::get('mysql.user'),
             Config::get('mysql.password'),
             Config::get('mysql.database'),
-            $port,
+            (int) Config::get('mysql.port'),
         );
     }
 

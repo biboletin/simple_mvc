@@ -1,5 +1,7 @@
 <?php
+
 use Core\Csrf;
+use Core\Session;
 
 ?>
 <!doctype html>
@@ -9,6 +11,7 @@ use Core\Csrf;
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="<?php echo assets('css/lib/bootstrap.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo assets('css/register.css'); ?>">
     <title>Register</title>
@@ -18,7 +21,7 @@ use Core\Csrf;
 
 <div class="container register-form">
     <form action="/admin/registerUser" method="post">
-        <input type="hidden" name="token" value="<?php echo (new Csrf())->generate();?>">
+        <input type="hidden" name="token" value="<?php echo (new Csrf(new Session()))->generate();?>">
         <div class="form">
             <div class="note">
                 <p>Register</p>

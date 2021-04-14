@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Core\Model;
@@ -12,20 +11,13 @@ use Core\Model;
  */
 class UserModel extends Model
 {
-    /**
-     * UserModel constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @param string $username
      *
      * @return array|null
      */
-    public function validateUser(string $username)
+    public function validateUser(string $username): array
     {
         $sql = "select id, password from users where `username` = ?";
         $stmt  = $this->prepare($sql);

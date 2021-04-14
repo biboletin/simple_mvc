@@ -1,9 +1,7 @@
 <?php
 
-
 namespace Core;
 
-use Core\Session;
 use Exception;
 
 /**

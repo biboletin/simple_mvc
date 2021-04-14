@@ -1,13 +1,10 @@
 <?php
 
-
 namespace App\Controllers;
 
 use Core\Controller;
 use Core\Request;
-
 use App\Models\AboutModel;
-use Core\View;
 
 /**
  * Class AboutController
@@ -16,13 +13,6 @@ use Core\View;
  */
 class AboutController extends Controller
 {
-    /**
-     * AboutController constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @param Request $request

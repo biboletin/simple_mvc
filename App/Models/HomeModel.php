@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Core\Model;
@@ -10,14 +11,6 @@ use Core\Model;
  */
 class HomeModel extends Model
 {
-
-    /**
-     * HomeModel constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @return mixed

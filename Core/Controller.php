@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Main controller class
  *
  * @namespace Core
  */
+
 namespace Core;
 
 /**
@@ -22,8 +24,18 @@ class Controller
      */
     private string $directory;
 
+    /**
+     * @var object|Session
+     */
     public object $session;
+    /**
+     * @var object|Csrf
+     */
     public object $csrf;
+    /**
+     * @var object|Hash
+     */
+    public object $hash;
 
     /**
      * Controller constructor.
@@ -34,6 +46,7 @@ class Controller
         $this->view = new View();
         $this->session = new Session();
         $this->csrf = new Csrf($this->session);
+        $this->hash = new Hash();
     }
 
     public function __destruct()
@@ -42,5 +55,6 @@ class Controller
         unset($this->view);
         unset($this->session);
         unset($this->csrf);
+        unset($this->hash);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 /**
@@ -37,7 +38,7 @@ class View
             include $this->viewDirectory . 'error.php';
             exit;
         }
-
+        extract($data, EXTR_SKIP);
         include $view . '.php';
         exit;
     }

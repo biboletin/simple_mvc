@@ -1,7 +1,9 @@
 <?php
+
 /**
  *
  */
+
 namespace Core;
 
 /**
@@ -14,7 +16,7 @@ final class Config
      * @param string|null $search
      * @return string
      */
-    public static function get($search = null): String
+    public static function get($search = null): string
     {
         $config = include __DIR__ . '/../config.php';
         $parts = explode('.', $search);

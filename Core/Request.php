@@ -31,12 +31,12 @@ final class Request
         if (!empty(array_filter($_GET))) {
             $_GET = array_map('trim', $_GET);
             $_GET = array_map('strip_tags', $_GET);
-            $this->get = (array) $_GET;
+            $this->get = $_GET;
         }
         if (!empty(array_filter($_POST))) {
             $_POST = array_map('trim', $_POST);
             $_POST = array_map('strip_tags', $_POST);
-            $this->post = (array) $_POST;
+            $this->post = $_POST;
         }
         $this->csrf = new Csrf(new Session());
         header('X-CSRF-Token: ' . $this->csrf->generateXCSRF());
@@ -87,7 +87,7 @@ final class Request
      */
     public function redirect(string $page, int $code = 200)
     {
-        return Redirect::to($page, $code);
+        Redirect::to($page, $code);
     }
 
     public function __destruct()

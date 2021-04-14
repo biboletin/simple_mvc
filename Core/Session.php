@@ -44,50 +44,48 @@ final class Session
     public function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
+            session_set_cookie_params(
+                (int) Config::get('session.max_life_time'),
+                Config::get('session.path'),
+                Config::get('session.domain'),
+                (bool) Config::get('session.secure'),
+                (bool) Config::get('session.cookie_httponly')
+            );
             session_start([
                 'save_path' => Config::get('session.save_path'),
                 'sid_length' => Config::get('session.sid_length'),
                 'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
             ]);
         }
-        /*
-        [
-                    'save_path' => Config::get('session.save_path'),
-                    'sid_length' => Config::get('session.sid_length'),
-                    'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
-                ]
-        */
-        /*
-                session_set_cookie_params(
-                    Config::get('session.max_life_time'),
-                    Config::get('session.path'),
-                    Config::get('session.domain'),
-                    Config::get('session.secure'),
-                    Config::get('session.cookie_httponly')
-                );
-        */
+
         $_SESSION = array_map('trim', $_SESSION);
         $_SESSION = array_map('strip_tags', $_SESSION);
         $this->session = $_SESSION;
     }
 
     /**
+     * @return object
+     */
+    public function start(): object
+    {
+        return new self();
+    }
+
+    /**
      * Adding session element
      *
-     * @param null $sessionKey
-     * @param null $sessionValue
+     * @param string $sessionKey
+     * @param string $sessionValue
      *
      * @return string
      */
-    public function set($sessionKey = null, $sessionValue = null): string
+    public function set(string $sessionKey, string $sessionValue): string
     {
         if ((empty($sessionKey)) || (empty($sessionValue))) {
             die(__METHOD__ . ' parameters are empty or null!');
         }
-
         $key = strip_tags(trim(addslashes($sessionKey)));
         $value = strip_tags(trim(addslashes($sessionValue)));
-//error_log(print_r($this->session, true));
         return $this->session[$key] = $value;
     }
 
@@ -105,11 +103,11 @@ final class Session
     }
 
     /**
-     * @param null $key
+     * @param string $key
      *
      * @return bool
      */
-    public function has($key = null): bool
+    public function has(string $key): bool
     {
         if (isset($this->session[$key])) {
             return isset($this->session[$key]);
@@ -138,16 +136,15 @@ final class Session
      */
     public function close(): void
     {
-        /*
-                session_unset();
-                session_destroy();
-                session_write_close();
-                setcookie(session_name(), '', 0, '/');
-        */
+        session_unset();
+        session_destroy();
+        session_write_close();
+        setcookie(session_name(), '', 0, '/');
     }
 
     public function flash($message): void
     {
+        // flash $message
     }
 
     public function __destruct()

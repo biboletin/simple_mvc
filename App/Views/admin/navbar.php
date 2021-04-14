@@ -30,5 +30,11 @@
                 <i class="fa fa-info-circle" aria-hidden="true"></i>Information
             </a>
         </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>Exit
+            </a>
+        </li>
     </ul>
+    <button class="btn btn-success">Exit</button>
 </div>

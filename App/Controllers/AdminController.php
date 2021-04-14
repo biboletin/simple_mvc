@@ -1,11 +1,10 @@
 <?php
+
 namespace App\Controllers;
 
 use Core\Controller;
 use Core\Request;
-use Core\Hash;
 use Core\Redirect;
-
 use App\Models\UserModel;
 use App\Models\AboutModel;
 
@@ -16,26 +15,13 @@ use App\Models\AboutModel;
  */
 class AdminController extends Controller
 {
-    /**
-     * @var object|Hash
-     */
-    private object $hash;
-
-    /**
-     * HomeController constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->hash = new Hash();
-    }
 
     /**
      * Login view
      *
-     * @return mixed
+     * @return string
      */
-    public function login()
+    public function login(): string
     {
         return $this->view->set('admin.login');
     }
@@ -45,7 +31,7 @@ class AdminController extends Controller
      *
      * @param Request $request
      */
-    public function auth(Request $request)
+    public function auth(Request $request): void
     {
         $username = $request->post('username');
         $password = $request->post('password');
@@ -54,11 +40,12 @@ class AdminController extends Controller
 
         if ($this->hash->verify($password, $result['password'])) {
             $this->session->set('loggedIn', true);
-            return $request->redirect('admin/dashboard');
-//            return $this->view->set('admin.dashboard');
+error_log('THIS: ' . print_r($this, true));
+error_log('SESSION: ' . print_r($this->session, true));
+            $request->redirect('admin/dashboard');
         } else {
             echo 'logged out';
-            return $request->redirect('admin/login');
+            $request->redirect('admin/login');
         }
     }
 
@@ -87,7 +74,7 @@ class AdminController extends Controller
             $this->hash->hashit($request->post('password'))
         );
         $this->session->set('loggedIn', true);
-        return $request->redirect('admin/dashboard');
+        $request->redirect('admin/dashboard');
     }
 
     /**
@@ -97,6 +84,7 @@ class AdminController extends Controller
      */
     public function dashboard(): string
     {
+$this->session->start();
         return $this->view->set('admin.dashboard');
     }
 
@@ -122,6 +110,6 @@ class AdminController extends Controller
     public function exit(): string
     {
         $this->session->close();
-        return Redirect::to('/');
+        Redirect::to('/');
     }
 }
