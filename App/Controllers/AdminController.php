@@ -40,10 +40,9 @@ class AdminController extends Controller
 
         if ($this->hash->verify($password, $result['password'])) {
             $this->session->set('loggedIn', true);
-error_log('THIS: ' . print_r($this, true));
-error_log('SESSION: ' . print_r($this->session, true));
             $request->redirect('admin/dashboard');
-        } else {
+        }
+        if (!$this->hash->verify($password, $result['password'])) {
             echo 'logged out';
             $request->redirect('admin/login');
         }
@@ -63,8 +62,9 @@ error_log('SESSION: ' . print_r($this->session, true));
      * Insert new user
      *
      * @param Request $request
+     * @return void
      */
-    public function registerUser(Request $request)
+    public function registerUser(Request $request): void
     {
         $user = new UserModel();
 
@@ -84,7 +84,9 @@ error_log('SESSION: ' . print_r($this->session, true));
      */
     public function dashboard(): string
     {
-$this->session->start();
+        if (!$this->session->get('loggedIn')) {
+            Redirect::to('admin/login');
+        }
         return $this->view->set('admin.dashboard');
     }
 
@@ -107,9 +109,12 @@ $this->session->start();
         return $this->view->set('admin.categories.index');
     }
 
-    public function exit(): string
+    /**
+     *
+     */
+    public function exit(): void
     {
         $this->session->close();
-        Redirect::to('/');
+        Redirect::to('admin/login');
     }
 }

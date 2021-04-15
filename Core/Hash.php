@@ -16,7 +16,7 @@ class Hash
      */
     private string $algorithm;
     /**
-     * @var array
+     * @var array<string, string, int>
      */
     private array $options;
 

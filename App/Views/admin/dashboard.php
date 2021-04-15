@@ -1,9 +1,6 @@
 <?php
 
-//use Core\Session;
-
-var_dump($_SESSION);
-//echo (new Session())->get('loggedIn') ? 'true' : 'false';
+use Core\Session;
 
 ?>
 <!doctype html>
@@ -20,5 +17,14 @@ var_dump($_SESSION);
 </head>
 <body>
 <?php include __DIR__ . '/navbar.php'; ?>
+<div class="container">
+<?php
+if ((new Session())->get('loggedIn')) {
+    echo 'user is logged in';
+} else {
+    echo 'user is not logged';
+}
+?>
+</div>
 </body>
 </html>

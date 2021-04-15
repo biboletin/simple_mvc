@@ -31,10 +31,9 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="/admin/exit">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>Exit
             </a>
         </li>
     </ul>
-    <button class="btn btn-success">Exit</button>
 </div>

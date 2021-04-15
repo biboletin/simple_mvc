@@ -65,9 +65,7 @@ class Router
      */
     private function parseURL(): array
     {
-        $url = $this->request->get('url')
-            ? $this->request->get('url')
-            : '/';
+        $url = $this->request->get('url') ?? '/';
         $params = $this->request;
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
@@ -76,15 +74,16 @@ class Router
 
         if (!isset($link[1]) && !empty($link[0])) {
             $this->defaultMethod = $link[0];
+            unset($link[0]);
         }
-
         if (isset($link[1])) {
             $this->controllerName = $link[0];
             $this->defaultMethod = $link[1];
+            unset($link[0]);
         }
-
         if (isset($link[2])) {
             $params = $link[2];
+            unset($link[0]);
         }
 
         $controller = $this->suffixController($this->controllerName);
@@ -115,10 +114,10 @@ class Router
                 Redirect::to('error', 404);
             }
             if (!method_exists($controller, $method)) {
+                echo 'method not exist!';
                 Redirect::to('error', 404);
             }
 
-//            if ($method !== 'favicon.ico') {
             if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
                 return (new $controller())->$method($params);
             }

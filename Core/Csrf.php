@@ -65,11 +65,11 @@ final class Csrf
     /**
      * Remove/Delete token
      *
-     * @return bool
+     * @return void
      */
-    public function del(): bool
+    public function del(): void
     {
-        return $this->session->del('token');
+        $this->session->del('token');
     }
 
     public function __destruct()

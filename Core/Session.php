@@ -32,9 +32,8 @@ namespace Core;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://github.com/biboletin/php
  */
-final class Session
+class Session
 {
-    private array $session;
     /**
      * Session constructor.
      *
@@ -57,10 +56,8 @@ final class Session
                 'trans_sid_hosts' => Config::get('session.trans_sid_hosts'),
             ]);
         }
-
         $_SESSION = array_map('trim', $_SESSION);
         $_SESSION = array_map('strip_tags', $_SESSION);
-        $this->session = $_SESSION;
     }
 
     /**
@@ -75,18 +72,18 @@ final class Session
      * Adding session element
      *
      * @param string $sessionKey
-     * @param string $sessionValue
+     * @param mixed $sessionValue
      *
      * @return string
      */
-    public function set(string $sessionKey, string $sessionValue): string
+    public function set(string $sessionKey, $sessionValue): string
     {
-        if ((empty($sessionKey)) || (empty($sessionValue))) {
-            die(__METHOD__ . ' parameters are empty or null!');
+        if (($sessionKey === null) || ($sessionKey === '')) {
+            die('No session key!');
         }
         $key = strip_tags(trim(addslashes($sessionKey)));
         $value = strip_tags(trim(addslashes($sessionValue)));
-        return $this->session[$key] = $value;
+        return $_SESSION[$key] = $value;
     }
 
     /**
@@ -99,7 +96,7 @@ final class Session
     public function get(string $sessionKey): string
     {
         $key = strip_tags(trim(stripslashes($sessionKey)));
-        return $this->session[$key] ?? '';
+        return $_SESSION[$key] ?? '';
     }
 
     /**
@@ -109,10 +106,7 @@ final class Session
      */
     public function has(string $key): bool
     {
-        if (isset($this->session[$key])) {
-            return isset($this->session[$key]);
-        }
-        return false;
+        return isset($_SESSION[$key]);
     }
 
     /**
@@ -120,13 +114,12 @@ final class Session
      *
      * @param string $sessionKey
      *
-     * @return bool
+     * @return void
      */
-    public function del(string $sessionKey): bool
+    public function del(string $sessionKey): void
     {
         $key = strip_tags(trim($sessionKey));
-        unset($this->session[$key]);
-        return true;
+        unset($_SESSION[$key]);
     }
 
     /**
@@ -136,25 +129,18 @@ final class Session
      */
     public function close(): void
     {
-        session_unset();
-        session_destroy();
-        session_write_close();
-        setcookie(session_name(), '', 0, '/');
-    }
-
-    public function flash($message): void
-    {
-        // flash $message
-    }
-
-    public function __destruct()
-    {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         session_unset();
         session_destroy();
         session_write_close();
-        $this->session = [];
+        setcookie(session_name(), '', 0, '/');
+        unset($this->session);
+    }
+
+    public function flash($message): void
+    {
+        // flash $message
     }
 }

@@ -35,4 +35,3 @@ function view(string $view, array $data = []): string
 {
     return (new View())->set($view, $data);
 }
-

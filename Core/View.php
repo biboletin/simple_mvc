@@ -27,7 +27,7 @@ class View
     /**
      *
      * @param string $viewName
-     * @param array   $data
+     * @param array<string>   $data
      *
      * @return string
      */

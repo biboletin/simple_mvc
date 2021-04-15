@@ -10,13 +10,13 @@ namespace Core;
 final class Request
 {
     /**
-     * @var array
+     * @var array<string>
      */
-    private array $get;
+    private array $get = [];
     /**
-     * @var array
+     * @var array<string>
      */
-    private array $post;
+    private array $post = [];
 
     /**
      * @var object|Csrf
@@ -73,7 +73,7 @@ final class Request
 
         if (($token === null) || ($token === false) || ($this->csrf->check($token))) {
             $this->redirect('error', 400);
-            exit;
+            return 'Invalid token!';
         }
 
         return $this->post[trim(strip_tags($key))] ?? '';
@@ -84,8 +84,10 @@ final class Request
      *
      * @param string $page
      * @param int  $code
+     *
+     * @return void
      */
-    public function redirect(string $page, int $code = 200)
+    public function redirect(string $page, int $code = 200): void
     {
         Redirect::to($page, $code);
     }
