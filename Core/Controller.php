@@ -49,6 +49,15 @@ class Controller
         $this->hash = new Hash();
     }
 
+    /**
+     *
+     * @return void
+     */
+    public function redirectToLogin(): void
+    {
+        Redirect::to('admin/login');
+    }
+
     public function __destruct()
     {
         $this->directory = '';

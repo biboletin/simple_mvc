@@ -16,7 +16,7 @@ class Redirect
     public static function to(string $page, int $code = 200): void
     {
         http_response_code($code);
-        //error_log('Location: ' . config('app.url') . $page);
+        error_log(config('app.url') . $page);
         header('Location: ' . config('app.url') . $page);
     }
 }

@@ -15,15 +15,18 @@ class UserModel extends Model
     /**
      * @param string $username
      *
-     * @return array|null
+     * @return array<string>
      */
-    public function validateUser(string $username): array
+    public function checkUsername(string $username): array
     {
         $sql = "select id, password from users where `username` = ?";
         $stmt  = $this->prepare($sql);
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            return [];
+        }
         return $result->fetch_assoc();
     }
     /**

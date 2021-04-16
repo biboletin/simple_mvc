@@ -136,11 +136,6 @@ class Session
         session_destroy();
         session_write_close();
         setcookie(session_name(), '', 0, '/');
-        unset($this->session);
-    }
-
-    public function flash($message): void
-    {
-        // flash $message
+        unset($_SESSION);
     }
 }

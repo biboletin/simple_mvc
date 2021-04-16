@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use Core\Controller;
 use Core\Request;
-use Core\Redirect;
 use App\Models\UserModel;
 use App\Models\AboutModel;
 
@@ -36,15 +35,17 @@ class AdminController extends Controller
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
-        $result = $user->validateUser($username);
+        $result = $user->checkUsername($username);
+        $userPass = !empty($result) ? $result['password'] : '';
 
-        if ($this->hash->verify($password, $result['password'])) {
+        if ($this->hash->verify($password, $userPass)) {
             $this->session->set('loggedIn', true);
             $request->redirect('admin/dashboard');
         }
-        if (!$this->hash->verify($password, $result['password'])) {
+        if (!$this->hash->verify($password, $userPass)) {
             echo 'logged out';
-            $request->redirect('admin/login');
+
+            $this->redirectToLogin();
         }
     }
 
@@ -85,7 +86,7 @@ class AdminController extends Controller
     public function dashboard(): string
     {
         if (!$this->session->get('loggedIn')) {
-            Redirect::to('admin/login');
+            $this->redirectToLogin();
         }
         return $this->view->set('admin.dashboard');
     }
@@ -115,6 +116,6 @@ class AdminController extends Controller
     public function exit(): void
     {
         $this->session->close();
-        Redirect::to('admin/login');
+        $this->redirectToLogin();
     }
 }
