@@ -37,7 +37,7 @@ class AdminController extends Controller
         $user = new UserModel();
         $result = $user->checkUsername($username);
         $userPass = !empty($result) ? $result['password'] : '';
-
+        error_log(print_r($request, true));
         if ($this->hash->verify($password, $userPass)) {
             $this->session->set('loggedIn', true);
             $request->redirect('admin/dashboard');

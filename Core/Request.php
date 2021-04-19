@@ -70,7 +70,6 @@ final class Request
         if (isset($this->post['token'])) {
             $token = $this->post['token'];
         }
-
         if ($token === null || $this->csrf->check($token)) {
             $this->redirect('error', 400);
             return 'Invalid token!';

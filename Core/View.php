@@ -34,12 +34,17 @@ class View
     public function set(string $viewName = 'error', array $data = []): string
     {
         $view = $this->parseView($viewName);
+        ob_start();
         if (!file_exists($view . '.php')) {
             include $this->viewDirectory . 'error.php';
-            exit;
         }
-        extract($data, EXTR_SKIP);
-        include $view . '.php';
+        if (file_exists($view . '.php')) {
+            extract($data, EXTR_SKIP);
+            include $view . '.php';
+        }
+        $output = ob_get_contents();
+        ob_end_clean();
+        echo $output;
         exit;
     }
 

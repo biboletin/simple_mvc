@@ -2,8 +2,6 @@
 
 namespace Core;
 
-use Core\Redirect;
-
 /**
  * Class Router
  *
@@ -29,7 +27,7 @@ class Router
      */
     private array $routes;
     /**
-     * @var array
+     * @var object
      */
     private object $request;
 
@@ -61,7 +59,7 @@ class Router
     /**
      * Parse url params
      *
-     * @return array
+     * @return array<string>
      */
     private function parseURL(): array
     {
@@ -105,19 +103,18 @@ class Router
     {
         $url = $this->parseURL();
         if (!empty($url)) {
-            $controller = $url['controller'];
+            $controllerName = $url['controller'];
+            $namespaceController = 'App\Controllers\\' . $controllerName;
+            $controller = $namespaceController;
             $method = $url['method'];
             $params = $url['params'];
-            $controller = 'App\Controllers\\' . $controller;
 
             if (!class_exists($controller, true)) {
                 Redirect::to('error', 404);
             }
             if (!method_exists($controller, $method)) {
-                echo 'method not exist!';
                 Redirect::to('error', 404);
             }
-
             if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
                 return (new $controller())->$method($params);
             }
