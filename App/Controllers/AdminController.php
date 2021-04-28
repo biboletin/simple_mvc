@@ -32,12 +32,16 @@ class AdminController extends Controller
      */
     public function auth(Request $request): void
     {
+        error_log(print_r($request, true));
+
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
         $result = $user->checkUsername($username);
         $userPass = !empty($result) ? $result['password'] : '';
+
         error_log(print_r($request, true));
+
         if ($this->hash->verify($password, $userPass)) {
             $this->session->set('loggedIn', true);
             $request->redirect('admin/dashboard');
