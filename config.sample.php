@@ -62,7 +62,7 @@ return [
         /**
          * Directory to store sessions
          */
-        'save_path' => __DIR__ . '/tmp',
+        'save_path' => __DIR__ . '/tmp/session',
         /**
          * Session expire after 24h
          *
