@@ -52,10 +52,10 @@ Use https!
          */
         'url' => 'https://localhost/',
 ```
+For proper loading javascript and css.
 
-Create if not exists:
-#### mvc/tmp/sessions
 
-For proper loading javascript and css
+Create if not exists **mvc/tmp/sessions**
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
