@@ -35,6 +35,11 @@ Create virtual host and go to
 ```bash
 http://hostname
 ```
+**Install from packagist**
+```bash
+composer create-project "bibo/mvc @dev"
+```
+
 ## Notes
 Works without hardcoded routes.  
 * URL: https://localhost/ControllerName/MethodName/params  

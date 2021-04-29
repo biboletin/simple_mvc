@@ -88,6 +88,7 @@ final class Request
      */
     public function redirect(string $page, int $code = 200): void
     {
+        error_log('redirect to page' . $page);
         Redirect::to($page, $code);
     }
 

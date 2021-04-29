@@ -22,6 +22,7 @@ class AdminController extends Controller
      */
     public function login(): string
     {
+        error_log('go to login view');
         return $this->view->set('admin.login');
     }
 

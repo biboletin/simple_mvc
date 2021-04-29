@@ -2,7 +2,7 @@
 
     use Core\Csrf;
     use Core\Session;
-
+error_log('in login view');
 ?>
 <!doctype html>
 <html lang="en">

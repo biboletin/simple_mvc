@@ -33,15 +33,14 @@ class Router
 
     /**
      * Router constructor.
-     * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->controllerName = 'Home';
         $this->defaultMethod = 'index';
         $this->params = [];
         $this->routes = [];
-        $this->request = $request;
+        $this->request = new Request();
     }
 
     /**
@@ -69,7 +68,10 @@ class Router
         $trimmed = array_map('trim', explode('/', $parse));
         $stripped = array_map('strip_tags', $trimmed);
         $link = $stripped;
-
+//error_log(print_r($link, true));
+//error_log(print_r($_SERVER, true));
+error_log($this->request->get('url'));
+error_log($_SERVER['REQUEST_URI']);
         if (!isset($link[1]) && !empty($link[0])) {
             $this->defaultMethod = $link[0];
             unset($link[0]);
