@@ -9,7 +9,7 @@
       "email": "shady_fan@abv.bg"
     }
   ],
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "require": {
       "php": ">=7.4.12",
     "illuminate/database": "9.x-dev"
