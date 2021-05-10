@@ -23,6 +23,10 @@ final class Request
      */
     private object $csrf;
 
+    private string $method; // GET, POST
+    private string $scheme; // HTTP, HTTPS
+    private string $uri; // /controller/action/params
+    private string $url; // http(s)://site.com/controller/action/params
     /**
      * Request constructor.
      */

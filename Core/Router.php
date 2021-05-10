@@ -14,13 +14,9 @@ class Router
      */
     private string $controllerName;
     /**
-     * @var array
-     */
-    private array $params;
-    /**
      * @var string
      */
-    private string $defaultMethod;
+    private string $actionName;
 
     /**
      * @var array
@@ -31,6 +27,8 @@ class Router
      */
     private object $request;
 
+    private string $uri;
+
     /**
      * Router constructor.
      * @param Request $request
@@ -38,24 +36,13 @@ class Router
     public function __construct(Request $request)
     {
         $this->controllerName = 'Home';
-        $this->defaultMethod = 'index';
+        $this->actionName = 'index';
         $this->params = [];
         $this->routes = [];
         $this->request = $request;
+        $this->uri = $request->get('url');
     }
 
-    /**
-     * @param $route
-     * @param $action
-     *
-     * @return void
-     */
-    /*
-        public function add($route, $action): void
-        {
-            $this->routes[$route] = $action;
-        }
-    */
     /**
      * Parse url params
      *
@@ -63,20 +50,24 @@ class Router
      */
     private function parseURL(): array
     {
-        $url = $this->request->get('url') ?? '/';
+        $url = !empty(trim($this->request->get('url')))
+            ? $this->request->get('url')
+            : '/';
         $params = $this->request;
+
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
         $stripped = array_map('strip_tags', $trimmed);
         $link = $stripped;
 
+
         if (!isset($link[1]) && !empty($link[0])) {
-            $this->defaultMethod = $link[0];
+            $this->actionName = $link[0];
             unset($link[0]);
         }
         if (isset($link[1])) {
             $this->controllerName = $link[0];
-            $this->defaultMethod = $link[1];
+            $this->actionName = $link[1];
             unset($link[0]);
         }
         if (isset($link[2])) {
@@ -85,7 +76,7 @@ class Router
         }
 
         $controller = $this->suffixController($this->controllerName);
-        $method = $this->defaultMethod;
+        $method = $this->actionName;
 
         return [
             'controller' => $controller,
@@ -102,36 +93,63 @@ class Router
     public function run()
     {
         $url = $this->parseURL();
-        if (!empty($url)) {
-            $controllerName = $url['controller'];
-            $namespaceController = 'App\Controllers\\' . $controllerName;
-            $controller = $namespaceController;
-            $method = $url['method'];
-            $params = $url['params'];
+        $controller = 'App\Controllers\\' . $url['controller'];
+        $method = $url['method'];
+        $params = $url['params'];
 
-            if (!class_exists($controller, true)) {
-                Redirect::to('error', 404);
-            }
-            if (!method_exists($controller, $method)) {
-                Redirect::to('error', 404);
-            }
-            if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
-                return (new $controller())->$method($params);
-            }
+        if (!class_exists($controller, true)) {
+            Redirect::to('error', 404);
+        }
+        if (!method_exists($controller, $method)) {
+            Redirect::to('error', 404);
+        }
+        if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
+            return (new $controller())->$method($params);
         }
     }
 
-    /**
-     * Initialize routes from DB
-     *
-     * @return void
-     */
-    /*
-        public function init(): void
-        {
-            //
+    public function get(string $route, $callback)
+    {
+        $this->routes['get'][$route] = $callback;
+    }
+    public function post(string $route, $callback)
+    {
+        $this->routes['post'][$route] = $callback;
+    }
+    public function init()
+    {
+        $this->resolve();
+    }
+
+    public function resolve()
+    {
+        $path = $this->getPath();
+        $method = $this->getMethod();
+        $callback = $this->routes[$method][$path] ?? false;
+        
+        if ($callback === false) {
+            Redirect::to('errors.404');
         }
-    */
+        if (is_string($callback)) {
+            // return 
+        }
+        echo call_user_func($callback);
+    }
+
+    public function getPath()
+    {
+        $path = server('request_uri') ?? '/';
+        $position = strpos($path, '?');
+        if ($position === false) {
+            return $path;
+        }
+        return substr($path, 0, $position);
+    }
+
+    public function getMethod()
+    {
+        return strtolower(server('request_method'));
+    }
     /**
      * Add Controller after controller(first url param) name
      *
@@ -150,7 +168,7 @@ class Router
     public function __destruct()
     {
         $this->controllerName = 'Home';
-        $this->defaultMethod = 'index';
+        $this->actionName = 'index';
         $this->params = [];
         $this->routes = [];
         unset($this->request);

@@ -35,3 +35,8 @@ function view(string $view, array $data = []): string
 {
     return (new View())->set($view, $data);
 }
+
+function server(string $key): string
+{
+    return $_SERVER[strtoupper(trim(strip_tags($key)))] ?? '';
+}
