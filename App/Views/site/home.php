@@ -27,7 +27,7 @@ Home page
 </form>
 
 <?php
-    echo '<pre>' . print_r($data, true) . '</pre>';
+    // echo '<pre>' . print_r($data, true) . '</pre>';
 ?>
 
 

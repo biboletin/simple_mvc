@@ -17,10 +17,7 @@ class HomeController extends Controller
      */
     public function index(): string
     {
-        $model = new HomeModel();
-        $data = $model->getUsers();
-        $user = $this->session->set('user', 'admin');
-        return $this->view->set('site.home', [$data, $user]);
+        return $this->view->set('site.home');
     }
 
     /**
@@ -30,6 +27,13 @@ class HomeController extends Controller
     {
         return $this->view->set('site.about');
     }
+
+    public function contacts(): string
+    {
+        // return $this->view->set('site.contacts');
+        return $this->view->set('site.contacts');
+    }
+
 
     public function __destruct()
     {

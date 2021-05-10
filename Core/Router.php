@@ -126,13 +126,20 @@ class Router
         $path = $this->getPath();
         $method = $this->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
-        
+        $params = [];
+
         if ($callback === false) {
-            Redirect::to('errors.404');
+            Redirect::to('error', 404);
         }
+
         if (is_string($callback)) {
-            // return 
+            return view($callback);
         }
+
+        if (is_array($callback)) {
+            return call_user_func_array([$callback[0], $callback[1]], $params);
+        }
+
         echo call_user_func($callback);
     }
 

@@ -12,13 +12,13 @@ use App\Controllers\HomeController;
 $request = new Request();
 $router = new Router($request);
 
-$router->get('/', [HomeController::class, 'index']);
+// $router->get('/', [HomeController::class, 'index']);
+$router->get('/', 'site.home');
 // $router->get('/about', [HomeController::class, 'about']);
 $router->get('/about', function () {
     return view('site.about');
 });
 $router->get('/contacts', [HomeController::class, 'contacts']);
-$router->post('/contacts', [HomeController::class, 'contacts']);
 
 
 $router->init();
