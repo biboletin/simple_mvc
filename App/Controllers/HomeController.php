@@ -30,7 +30,6 @@ class HomeController extends Controller
 
     public function contacts(): string
     {
-        // return $this->view->set('site.contacts');
         return $this->view->set('site.contacts');
     }
 

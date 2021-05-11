@@ -31,7 +31,7 @@
             </a>
         </li>
         <li>
-            <a href="/admin/exit">
+            <a href="/admin/logout">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>Exit
             </a>
         </li>

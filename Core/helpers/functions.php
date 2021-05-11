@@ -40,3 +40,8 @@ function server(string $key): string
 {
     return $_SERVER[strtoupper(trim(strip_tags($key)))] ?? '';
 }
+
+function route(string $route)
+{
+    return $route;
+}

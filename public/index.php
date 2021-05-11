@@ -7,6 +7,7 @@ include_once __DIR__ . '/../vendor/autoload.php';
 use Core\Router;
 use Core\Request;
 use App\Controllers\HomeController;
+use App\Controllers\AdminController;
 
 
 $request = new Request();
@@ -19,6 +20,10 @@ $router->get('/about', function () {
     return view('site.about');
 });
 $router->get('/contacts', [HomeController::class, 'contacts']);
+$router->get('/admin/register', [AdminController::class, 'register']);
+$router->get('/admin/login', [AdminController::class, 'login']);
+
+$router->post('/admin/auth', [AdminController::class, 'auth']);
 
 
 $router->init();

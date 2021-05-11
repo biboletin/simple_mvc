@@ -124,22 +124,27 @@ class Router
     public function resolve()
     {
         $path = $this->getPath();
-        $method = $this->getMethod();
-        $callback = $this->routes[$method][$path] ?? false;
+        $httpMethod = $this->getMethod();
+        $callback = $this->routes[$httpMethod][$path] ?? false;
         $params = [];
-
+        if (strtoupper($httpMethod) === 'POST') {
+            $params = [$this->request];
+        }
+        // error_log('here');
+        error_log($path);
+        error_log($httpMethod);
+        error_log(print_r($callback, true));
         if ($callback === false) {
             Redirect::to('error', 404);
         }
-
         if (is_string($callback)) {
             return view($callback);
         }
-
         if (is_array($callback)) {
-            return call_user_func_array([$callback[0], $callback[1]], $params);
+            $class = new $callback[0]();
+            $method = $callback[1];
+            return call_user_func_array([$class, $method], $params);
         }
-
         echo call_user_func($callback);
     }
 
