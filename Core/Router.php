@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\Classes\DefaultController;
 /**
  * Class Router
  *
@@ -41,6 +42,8 @@ class Router
         $this->routes = [];
         $this->request = $request;
         $this->uri = $request->get('url');
+        $defaultController = new DefaultController();
+        error_log(print_r($defaultController, true));
     }
 
     /**
@@ -126,14 +129,11 @@ class Router
         $path = $this->getPath();
         $httpMethod = $this->getMethod();
         $callback = $this->routes[$httpMethod][$path] ?? false;
-        $params = [];
+        $params = []; //$this->getParams();
         if (strtoupper($httpMethod) === 'POST') {
             $params = [$this->request];
         }
-        // error_log('here');
-        error_log($path);
-        error_log($httpMethod);
-        error_log(print_r($callback, true));
+
         if ($callback === false) {
             Redirect::to('error', 404);
         }
@@ -145,7 +145,8 @@ class Router
             $method = $callback[1];
             return call_user_func_array([$class, $method], $params);
         }
-        echo call_user_func($callback);
+
+        echo call_user_func($callback, $params);
     }
 
     public function getPath()
@@ -157,11 +158,19 @@ class Router
         }
         return substr($path, 0, $position);
     }
+    
+    public function getParams()
+    {
+        $path = server('request_uri') ?? '/';
+        $explode = explode('/', $path);
+        return $explode[3];
+    }
 
     public function getMethod()
     {
         return strtolower(server('request_method'));
     }
+
     /**
      * Add Controller after controller(first url param) name
      *
@@ -173,7 +182,16 @@ class Router
     {
         return ucfirst(trim($controllerName)) . 'Controller';
     }
+    
+    private function checkClassExists($class)
+    {
+        if (class_exists($class)) {
+            return $class;
+        }
+        return false;
+    }
 
+    
     /**
      *
      */

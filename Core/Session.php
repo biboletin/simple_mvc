@@ -63,7 +63,7 @@ class Session
     /**
      * @return object
      */
-    public static function start(): object
+    public function start(): object
     {
         return new self();
     }
@@ -76,7 +76,7 @@ class Session
      *
      * @return string
      */
-    public static function set(string $sessionKey, $sessionValue): string
+    public function set(string $sessionKey, $sessionValue): string
     {
         if (($sessionKey === null) || ($sessionKey === '')) {
             die('No session key!');
@@ -93,7 +93,7 @@ class Session
      *
      * @return string
      */
-    public static function get(string $sessionKey): string
+    public function get(string $sessionKey): string
     {
         $key = strip_tags(trim(stripslashes($sessionKey)));
         return $_SESSION[$key] ?? '';
@@ -104,7 +104,7 @@ class Session
      *
      * @return bool
      */
-    public static function has(string $key): bool
+    public function has(string $key): bool
     {
         return isset($_SESSION[$key]);
     }
@@ -116,15 +116,20 @@ class Session
      *
      * @return void
      */
-    public static function del(string $sessionKey): void
+    public function del(string $sessionKey): void
     {
         $key = strip_tags(trim($sessionKey));
         unset($_SESSION[$key]);
     }
 
-    public static function dump()
+    public function dump()
     {
         return var_dump($_SESSION);
+    }
+    
+    public function name()
+    {
+        return session_name();
     }
 
     /**
@@ -132,7 +137,7 @@ class Session
      *
      * @return void
      */
-    public static function close(): void
+    public function close(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

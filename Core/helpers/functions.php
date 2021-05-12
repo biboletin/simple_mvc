@@ -41,7 +41,7 @@ function server(string $key): string
     return $_SERVER[strtoupper(trim(strip_tags($key)))] ?? '';
 }
 
-function route(string $route)
+function route(string $route): string
 {
-    return $route;
+    return config('app.url') . $route;
 }

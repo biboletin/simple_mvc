@@ -1,8 +1,6 @@
 <?php
-
     use Core\Csrf;
-use Core\Session;
-
+    use Core\Session;
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,7 +21,7 @@ use Core\Session;
     <div id="formContent">
         <h3 class="text-center">Login</h3>
         <!-- Login Form -->
-        <form name="" action="/admin/auth" method="post">
+        <form name="" action="<?php echo route('admin/auth'); ?>" method="post">
             <input 
                 type="hidden" 
                 name="token" 
