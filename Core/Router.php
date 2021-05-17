@@ -3,6 +3,9 @@
 namespace Core;
 
 use Core\Classes\DefaultController;
+use Core\Classes\ValidateController;
+use Core\Classes\ValidateParams;
+
 /**
  * Class Router
  *
@@ -18,7 +21,6 @@ class Router
      * @var string
      */
     private string $actionName;
-
     /**
      * @var array
      */
@@ -27,8 +29,16 @@ class Router
      * @var object
      */
     private object $request;
-
+    /**
+     * @var string
+     */
     private string $uri;
+    /**
+     * @var array
+     */
+    private array $params;
+
+    // private string $controller;
 
     /**
      * Router constructor.
@@ -36,14 +46,11 @@ class Router
      */
     public function __construct(Request $request)
     {
-        $this->controllerName = 'Home';
-        $this->actionName = 'index';
+        $this->controllerName = (new DefaultController())->getDefaultController();
+        $this->actionName = (new DefaultController())->getDefaultAction();
         $this->params = [];
         $this->routes = [];
         $this->request = $request;
-        $this->uri = $request->get('url');
-        $defaultController = new DefaultController();
-        error_log(print_r($defaultController, true));
     }
 
     /**
@@ -80,7 +87,11 @@ class Router
 
         $controller = $this->suffixController($this->controllerName);
         $method = $this->actionName;
-
+error_log(print_r([
+    'controller' => $controller,
+    'method' => $method,
+    'params' => $params,
+], true));
         return [
             'controller' => $controller,
             'method' => $method,
@@ -111,28 +122,42 @@ class Router
         }
     }
 
-    public function get(string $route, $callback)
+    /**
+     * @param string $routeName
+     * @param        $callback
+     */
+    public function get(string $routeName, $callback)
     {
-        $this->routes['get'][$route] = $callback;
+        $this->routes['get'][$routeName] = $callback;
     }
+
+    /**
+     * @param string $route
+     * @param        $callback
+     */
     public function post(string $route, $callback)
     {
         $this->routes['post'][$route] = $callback;
     }
+
+    /**
+     *
+     */
     public function init()
     {
         $this->resolve();
     }
 
+    /**
+     * @return false|mixed|string
+     */
     public function resolve()
     {
         $path = $this->getPath();
+error_log('PATH: ' . $path);
         $httpMethod = $this->getMethod();
         $callback = $this->routes[$httpMethod][$path] ?? false;
-        $params = []; //$this->getParams();
-        if (strtoupper($httpMethod) === 'POST') {
-            $params = [$this->request];
-        }
+        $params = $this->getParams($path);
 
         if ($callback === false) {
             Redirect::to('error', 404);
@@ -149,23 +174,40 @@ class Router
         echo call_user_func($callback, $params);
     }
 
+    public function processPath(string $path)
+    {
+        return $path;
+    }
+    /**
+     * @return false|string
+     */
     public function getPath()
     {
         $path = server('request_uri') ?? '/';
         $position = strpos($path, '?');
+
         if ($position === false) {
             return $path;
         }
+
         return substr($path, 0, $position);
     }
-    
-    public function getParams()
+
+    /**
+     * @return mixed|string
+     */
+    public function getParams($url)
     {
-        $path = server('request_uri') ?? '/';
+        $validator = new ValidateParams();
+        $path = $url;
         $explode = explode('/', $path);
-        return $explode[3];
+// error_log('PARAMS: ' . print_r($explode, true));
+        return $explode;
     }
 
+    /**
+     * @return string
+     */
     public function getMethod()
     {
         return strtolower(server('request_method'));
@@ -182,7 +224,12 @@ class Router
     {
         return ucfirst(trim($controllerName)) . 'Controller';
     }
-    
+
+    /**
+     * @param $class
+     *
+     * @return false|string
+     */
     private function checkClassExists($class)
     {
         if (class_exists($class)) {
@@ -191,7 +238,6 @@ class Router
         return false;
     }
 
-    
     /**
      *
      */

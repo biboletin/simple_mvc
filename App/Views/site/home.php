@@ -16,21 +16,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php echo config('app.name');?></title>
     <link rel="shortcut icon" href="#" />
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="<?php echo assets('css/index.css')?>">
 </head>
 <body>
-Home page
-<br>
-<form method="post">
-    <input type="text" name="index" id="index">
-    <input type="button" name="btn" id="btn" value="submit">
-</form>
-
-<?php
-    // echo '<pre>' . print_r($data, true) . '</pre>';
-?>
-
-
+<h1 class="text-center">
+    Home page of <?php echo $data[0];?>
+</h1>
 
 <script src="<?php echo assets('js/index.js')?>"></script>
 </body>

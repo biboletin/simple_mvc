@@ -14,14 +14,14 @@ class View
      *
      * @var string
      */
-    private string $viewDirectory;
+    private string $viewsDirectory;
 
     /**
      * View constructor.
      */
     public function __construct()
     {
-        $this->viewDirectory = __DIR__ . '/../App/Views/';
+        $this->viewsDirectory = __DIR__ . '/../App/Views/';
     }
 
     /**
@@ -36,7 +36,7 @@ class View
         $view = $this->parseView($viewName);
         ob_start();
         if (!file_exists($view . '.php')) {
-            include $this->viewDirectory . 'error.php';
+            include $this->viewsDirectory . 'error.php';
         }
         if (file_exists($view . '.php')) {
             extract($data, EXTR_SKIP);
@@ -55,11 +55,11 @@ class View
      */
     private function parseView(string $view): string
     {
-        return $this->viewDirectory . implode('/', explode('.', $view));
+        return $this->viewsDirectory . implode('/', explode('.', $view));
     }
 
     public function __destruct()
     {
-        $this->viewDirectory = '';
+        $this->viewsDirectory = '';
     }
 }

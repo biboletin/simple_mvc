@@ -126,7 +126,7 @@ class Session
     {
         return var_dump($_SESSION);
     }
-    
+
     public function name()
     {
         return session_name();

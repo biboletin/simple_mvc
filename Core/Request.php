@@ -2,6 +2,9 @@
 
 namespace Core;
 
+use Core\Classes\PostRequest;
+use Core\Classes\GetRequest;
+
 /**
  * Class Request
  *
@@ -10,13 +13,13 @@ namespace Core;
 final class Request
 {
     /**
-     * @var array<string>
+     * @var object
      */
-    private array $get = [];
+    private object $get;
     /**
-     * @var array<string>
+     * @var object
      */
-    private array $post = [];
+    private object $post;
 
     /**
      * @var object|Csrf
@@ -27,24 +30,14 @@ final class Request
     private string $scheme; // HTTP, HTTPS
     private string $uri; // /controller/action/params
     private string $url; // http(s)://site.com/controller/action/params
+
     /**
      * Request constructor.
      */
     public function __construct()
     {
-        if (!empty(array_filter($_GET))) {
-            $_GET = array_map('trim', $_GET);
-            $_GET = array_map('strip_tags', $_GET);
-            $this->get = $_GET;
-        }
-        if (!empty(array_filter($_POST))) {
-            $_POST = array_map('trim', $_POST);
-            $_POST = array_map('strip_tags', $_POST);
-            $this->post = $_POST;
-        }
-        $this->csrf = new Csrf(new Session());
-        header('X-CSRF-Token: ' . $this->csrf->generateXCSRF());
-        header('X-XSRF-TOKEN: ' . $this->csrf->generateXXCSRF());
+        $this->post = new PostRequest();
+        $this->get = new GetRequest();
     }
 
     /**
@@ -57,7 +50,7 @@ final class Request
      */
     public function get(string $key): string
     {
-        return $this->get[trim(strip_tags($key))] ?? '';
+        return $this->get->get($key);
     }
 
     /**
@@ -71,15 +64,20 @@ final class Request
     public function post(string $key): string
     {
         $token = null;
-        if (isset($this->post['token'])) {
-            $token = $this->post['token'];
+        if ($this->post->input('token') !== '') {
+            $token = $this->post->input('token');
         }
         if ($token === null || $this->csrf->check($token)) {
             $this->redirect('error', 400);
             return 'Invalid token!';
         }
 
-        return $this->post[trim(strip_tags($key))] ?? '';
+        return $this->post->input($key);
+    }
+
+    public function all()
+    {
+        return array_merge($this->post->all(), $this->get->all());
     }
 
     /**
@@ -97,7 +95,7 @@ final class Request
 
     public function __destruct()
     {
-        $this->get = [];
-        $this->post = [];
+        unset($this->get);
+        unset($this->post);
     }
 }

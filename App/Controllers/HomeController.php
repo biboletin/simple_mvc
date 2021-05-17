@@ -33,7 +33,6 @@ class HomeController extends Controller
         return $this->view->set('site.contacts');
     }
 
-
     public function __destruct()
     {
         $this->session->close();

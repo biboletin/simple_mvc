@@ -110,6 +110,13 @@ class AdminController extends Controller
         return $this->view->set('admin.categories.index');
     }
 
+
+    public function users(int $id)
+    {
+        return $this->view->set('admin.users', [$id]);
+    }
+
+
     /**
      *
      */

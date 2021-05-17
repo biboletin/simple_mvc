@@ -12,18 +12,14 @@ use App\Controllers\AdminController;
 
 $request = new Request();
 $router = new Router($request);
-
-// $router->get('/', [HomeController::class, 'index']);
-$router->get('/', 'site.home');
-// $router->get('/about', [HomeController::class, 'about']);
-$router->get('/about', function () {
-    return view('site.about');
-});
+/*
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/about', [HomeController::class, 'about']);
 $router->get('/contacts', [HomeController::class, 'contacts']);
 $router->get('/admin/register', [AdminController::class, 'register']);
 $router->get('/admin/login', [AdminController::class, 'login']);
-
-$router->post('/admin/auth', [AdminController::class, 'auth']);
-
+$router->get('/admin/users/{id}', [AdminController::class, 'users']);
 
 $router->init();
+*/
+$router->run();
