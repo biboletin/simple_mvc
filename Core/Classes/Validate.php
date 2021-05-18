@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Core\Classes;
 
-
-final class ValidateParams
+final class Validate
 {
     private array $patterns = [
         '{name}' => '([a-zA-zа-яА-Я\s]+)',
@@ -17,16 +15,19 @@ final class ValidateParams
 
     public function __construct()
     {
-
     }
 
-    public function getParams()
+    public function controller($controller)
     {
-
+    }
+    public function method($method)
+    {
+    }
+    public function params($params)
+    {
     }
 
-    public function replace($url)
+    public function routes($routes)
     {
-
     }
 }

@@ -80,6 +80,10 @@ final class Request
         return array_merge($this->post->all(), $this->get->all());
     }
 
+    public function getMethod(): string
+    {
+        return server('request_method');
+    }
     /**
      * Redirect to page/view
      *

@@ -64,11 +64,10 @@ class DefaultController
     public function getCurrentController()
     {
         $url = array_values(
-                array_filter(
-                    explode('/', $this->uri)
-                )
+            array_filter(
+                explode('/', $this->uri)
+            )
         );
-
     }
 
     /**

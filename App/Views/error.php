@@ -5,7 +5,7 @@ switch (http_response_code()) {
         $error = 'Bad Request!';
         break;
     case 404:
-        $error = 'The page you are looking for was not found';
+        $error = 'The page you are looking for was not found!';
         break;
     case 500:
         $error = 'Server error!';
