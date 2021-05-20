@@ -111,9 +111,14 @@ class AdminController extends Controller
     }
 
 
-    public function users(int $id)
+    public function users(string $id)
     {
-        return $this->view->set('admin.users', [$id]);
+        $user = [
+            'firstname' => 'Mihail',
+            'lastname' => 'ivanov',
+        ];
+error_log($id);
+        return $this->view->set('admin.users', $user);
     }
 
 

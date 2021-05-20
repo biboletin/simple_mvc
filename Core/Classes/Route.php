@@ -58,7 +58,7 @@ class Route
         $url = !empty(trim($this->request->get('url')))
             ? $this->request->get('url')
             : '/';
-        $params = $this->request;
+        $params = [];
 
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
@@ -74,9 +74,10 @@ class Route
             $this->controllerName = $link[0];
             $this->actionName = $link[1];
             unset($link[0]);
+            unset($link[1]);
         }
         if (isset($link[2])) {
-            $params = $link[2];
+            $params = array_values($link);
             unset($link[0]);
         }
 
@@ -109,9 +110,8 @@ class Route
     protected function resolve()
     {
         $path = $this->getPath();
-        error_log('PATH: ' . $path);
         $httpMethod = $this->getMethod();
-        error_log('METHOD: ' . $httpMethod);
+
         $callback = $this->routes[$httpMethod][$path] ?? false;
         $params = $this->getParams($path);
 
@@ -145,9 +145,9 @@ class Route
     /**
      * Get URI path
      *
-     * @return void
+     * @return string
      */
-    protected function getPath()
+    protected function getPath(): string
     {
         $path = server('request_uri') ?? '/';
         $position = strpos($path, '?');
@@ -168,9 +168,23 @@ class Route
      */
     protected function getParams($url)
     {
-        $explode = explode('/', $url);
+        $parts = explode('/', $this->getPath());
+        $routeFirst = implode('/', array_slice($parts, 1, 2));
+        
+        foreach ($this->routes[$this->getMethod()] as $path => $route) {
+            $currentKey = $this->routes[$this->getMethod()][$path];
+            $part = explode('/', $path);
+            $routeSecond = implode('/', array_slice($part, 1, 2));
+            $param = $part[3] ?? null;
 
-        return $explode;
+            if ($routeFirst === $routeSecond && $param !== null) {
+                error_log($this->getPath() . ' === ' . $path);
+                $path = str_replace($param, $parts[3], $path);
+            }
+            $this->routes[$this->getMethod()][$path] = $currentKey;
+            return $parts[3];
+        }
+// error_log(print_r($this->routes, true));
     }
 
     /**

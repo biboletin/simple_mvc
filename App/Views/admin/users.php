@@ -1,4 +1,1 @@
-user 
-<?php
- echo $data[0];
-?>
+User <?php echo $data->firstname; ?>

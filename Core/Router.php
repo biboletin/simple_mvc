@@ -72,7 +72,6 @@ final class Router extends Route
      */
     public function init()
     {
-// error_log(print_r($this->routes, true));
         $this->resolve();
     }
 }

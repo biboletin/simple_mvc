@@ -27,19 +27,20 @@ class View
     /**
      *
      * @param string $viewName
-     * @param array<string>   $data
+     * @param array<string>   $params
      *
      * @return string
      */
-    public function set(string $viewName = 'error', array $data = []): string
+    public function set(string $viewName = 'error', array $params = []): string
     {
         $view = $this->parseView($viewName);
+        $data = (object) $params;
+
         ob_start();
         if (!file_exists($view . '.php')) {
             include $this->viewsDirectory . 'error.php';
         }
         if (file_exists($view . '.php')) {
-            extract($data, EXTR_SKIP);
             include $view . '.php';
         }
         $output = ob_get_contents();
