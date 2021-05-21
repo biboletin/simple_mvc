@@ -7,12 +7,9 @@
 use Core\Config;
 use Core\View;
 
- /**
-  * Undocumented function
-  *
-  * @param string $param
-  * @return string
-  */
+/**
+ * Undocumented function
+ */
 function config(string $param): string
 {
     return Config::get($param);
@@ -20,9 +17,6 @@ function config(string $param): string
 
 /**
  * Undocumented function
- *
- * @param string $path
- * @return string
  */
 function assets(string $path): string
 {
@@ -31,10 +25,7 @@ function assets(string $path): string
 }
 
 /**
- * @param string $view
  * @param array $data
- *
- * @return string
  */
 function view(string $view, array $data = []): string
 {
@@ -42,9 +33,6 @@ function view(string $view, array $data = []): string
 }
 /**
  * Server variables
- *
- * @param string $key
- * @return string
  */
 function server(string $key): string
 {
@@ -52,9 +40,6 @@ function server(string $key): string
 }
 /**
  * Undocumented function
- *
- * @param string $route
- * @return string
  */
 function route(string $route): string
 {

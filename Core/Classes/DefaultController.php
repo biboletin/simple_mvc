@@ -9,13 +9,7 @@ namespace Core\Classes;
  */
 class DefaultController
 {
-    /**
-     * @var string
-     */
     private string $controllerName;
-    /**
-     * @var string
-     */
     private string $action;
 
     private string $uri;
@@ -29,53 +23,28 @@ class DefaultController
         $this->uri = server('request_uri');
     }
 
-    /**
-     * @param string $controller
-     */
-    public function setDefaultController(string $controller): void
+    public function __destruct()
     {
-        $this->controllerName = $controller;
+        $this->controllerName = 'Home';
+        $this->controllerName = 'index';
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultController(): string
     {
         return ucfirst(strtolower(trim($this->controllerName)));
     }
 
-    /**
-     * @param string $action
-     */
-    public function setDefaultAction(string $action): void
-    {
-        $this->action = $action;
-    }
-
-    /**
-     * @return string
-     */
     public function getDefaultAction(): string
     {
         return $this->action;
     }
 
-    public function getCurrentController()
+    public function getCurrentController(): void
     {
         $url = array_values(
             array_filter(
                 explode('/', $this->uri)
             )
         );
-    }
-
-    /**
-     *
-     */
-    public function __destruct()
-    {
-        $this->controllerName = 'Home';
-        $this->controllerName = 'index';
     }
 }

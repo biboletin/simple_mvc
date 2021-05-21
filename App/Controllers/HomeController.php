@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use App\Models\HomeModel;
 
 /**
  * Class HomeController
@@ -12,17 +11,15 @@ use App\Models\HomeModel;
  */
 class HomeController extends Controller
 {
-    /**
-     * @return string
-     */
+    public function __destruct()
+    {
+        $this->session->close();
+    }
     public function index(): string
     {
         return $this->view->set('site.home');
     }
 
-    /**
-     * @return string
-     */
     public function about(): string
     {
         return $this->view->set('site.about');
@@ -31,10 +28,5 @@ class HomeController extends Controller
     public function contacts(): string
     {
         return $this->view->set('site.contacts');
-    }
-
-    public function __destruct()
-    {
-        $this->session->close();
     }
 }

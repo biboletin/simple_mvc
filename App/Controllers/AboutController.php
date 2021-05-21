@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\AboutModel;
 use Core\Controller;
 use Core\Request;
-use App\Models\AboutModel;
 
 /**
  * Class AboutController
@@ -13,12 +13,6 @@ use App\Models\AboutModel;
  */
 class AboutController extends Controller
 {
-
-    /**
-     * @param Request $request
-     *
-     * @return string
-     */
     public function addEditInfo(Request $request): string
     {
         $model = new AboutModel();

@@ -14,16 +14,20 @@ final class Csrf
     private object $session;
     private int $bytes;
 
-    public function __construct(Session $session)
+    public function __construct()
     {
-        $this->session = $session;
+        $this->session = new Session();
         $this->bytes = intval(Config::get('security.random_bytes'));
+    }
+
+    public function __destruct()
+    {
+        unset($this->session);
     }
 
     /**
      * Generates CSRF token
      *
-     * @return string
      * @throws Exception
      */
     public function generate(): string
@@ -32,7 +36,6 @@ final class Csrf
     }
 
     /**
-     * @return string
      * @throws Exception
      */
     public function generateXCSRF(): string
@@ -49,9 +52,8 @@ final class Csrf
     }
     /**
      * Validate token
-     * @param null $token
      *
-     * @return bool
+     * @param null $token
      */
     public function check($token = null): bool
     {
@@ -64,16 +66,9 @@ final class Csrf
 
     /**
      * Remove/Delete token
-     *
-     * @return void
      */
     public function del(): void
     {
         $this->session->del('token');
-    }
-
-    public function __destruct()
-    {
-        unset($this->session);
     }
 }

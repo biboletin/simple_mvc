@@ -11,7 +11,6 @@ use Core\Model;
  */
 class HomeModel extends Model
 {
-
     /**
      * @return mixed
      */

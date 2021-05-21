@@ -1,6 +1,6 @@
 <?php
 
-use Core\Session;
+    use Core\Session;
 
 ?>
 <!doctype html>

@@ -2,8 +2,8 @@
 
 namespace Core;
 
-use Core\Classes\PostRequest;
 use Core\Classes\GetRequest;
+use Core\Classes\PostRequest;
 
 /**
  * Class Request
@@ -13,24 +13,17 @@ use Core\Classes\GetRequest;
 final class Request
 {
     /**
-     * @var object
+     * @var object|GetRequest
      */
     private object $get;
     /**
-     * @var object
+     * @var object|PostRequest
      */
     private object $post;
-
     /**
      * @var object|Csrf
      */
     private object $csrf;
-
-    private string $method; // GET, POST
-    private string $scheme; // HTTP, HTTPS
-    private string $uri; // /controller/action/params
-    private string $url; // http(s)://site.com/controller/action/params
-
     /**
      * Request constructor.
      */
@@ -38,6 +31,7 @@ final class Request
     {
         $this->post = new PostRequest();
         $this->get = new GetRequest();
+        $this->csrf = new Csrf();
     }
 
     /**
@@ -68,18 +62,28 @@ final class Request
             $token = $this->post->input('token');
         }
         if ($token === null || $this->csrf->check($token)) {
-            $this->redirect('error', 400);
+            $this->redirect('errors.400', 400);
             return 'Invalid token!';
         }
 
         return $this->post->input($key);
     }
 
-    public function all()
+    /**
+     * Get all HTTP values
+     *
+     * @return array
+     */
+    public function all(): array
     {
         return array_merge($this->post->all(), $this->get->all());
     }
 
+    /**
+     * Get HTTP method
+     *
+     * @return string
+     */
     public function getMethod(): string
     {
         return server('request_method');
@@ -88,15 +92,16 @@ final class Request
      * Redirect to page/view
      *
      * @param string $page
-     * @param int  $code
-     *
-     * @return void
+     * @param int    $code default 200
      */
     public function redirect(string $page, int $code = 200): void
     {
         Redirect::to($page, $code);
     }
 
+    /**
+     * Destruct $_GET and $_POST
+     */
     public function __destruct()
     {
         unset($this->get);

@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\AboutModel;
+use App\Models\UserModel;
 use Core\Controller;
 use Core\Request;
-use App\Models\UserModel;
-use App\Models\AboutModel;
 
 /**
  * Class AdminController
@@ -14,10 +14,8 @@ use App\Models\AboutModel;
  */
 class AdminController extends Controller
 {
-
     /**
-     * Login view
-     *
+     * Login page
      * @return string
      */
     public function login(): string
@@ -36,13 +34,13 @@ class AdminController extends Controller
         $password = $request->post('password');
         $user = new UserModel();
         $result = $user->checkUsername($username);
-        $userPass = !empty($result) ? $result['password'] : '';
+        $userPass = ! empty($result) ? $result['password'] : '';
 
         if ($this->hash->verify($password, $userPass)) {
             $this->session->set('loggedIn', true);
             $request->redirect('admin/dashboard');
         }
-        if (!$this->hash->verify($password, $userPass)) {
+        if (! $this->hash->verify($password, $userPass)) {
             echo 'logged out';
 
             $this->redirectToLogin();
@@ -51,7 +49,6 @@ class AdminController extends Controller
 
     /**
      * Registration view
-     *
      * @return string
      */
     public function register(): string
@@ -61,9 +58,7 @@ class AdminController extends Controller
 
     /**
      * Insert new user
-     *
      * @param Request $request
-     * @return void
      */
     public function registerUser(Request $request): void
     {
@@ -85,13 +80,15 @@ class AdminController extends Controller
      */
     public function dashboard(): string
     {
-        if (!$this->session->get('loggedIn')) {
+        if (! $this->session->get('loggedIn')) {
             $this->redirectToLogin();
         }
         return $this->view->set('admin.dashboard');
     }
 
     /**
+     * About page
+     *
      * @return string
      */
     public function about(): string
@@ -103,6 +100,8 @@ class AdminController extends Controller
     }
 
     /**
+     * Categories page
+     *
      * @return string
      */
     public function categories(): string
@@ -110,21 +109,24 @@ class AdminController extends Controller
         return $this->view->set('admin.categories.index');
     }
 
-
-    public function users(string $id)
+    public function users(Request $request): string
     {
         $user = [
-            'firstname' => 'Mihail',
-            'lastname' => 'ivanov',
+            'id' => $request->post('id'),
+            'name' => 'Mihail',
         ];
-error_log($id);
         return $this->view->set('admin.users', $user);
     }
 
+    public function listUsers($id): string
+    {
+        $user = [
+            'id' => $id,
+            'name' => 'Mihail',
+        ];
+        return $this->view->set('admin.users', $user);
+    }
 
-    /**
-     *
-     */
     public function logout(): void
     {
         $this->session->close();

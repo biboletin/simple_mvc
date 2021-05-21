@@ -15,8 +15,6 @@ class Model extends \MySQLi
 {
     /**
      * Models base directory
-     *
-     * @var string
      */
     private string $directory;
 

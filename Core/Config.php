@@ -8,15 +8,12 @@ namespace Core;
 
 /**
  * Class Config
+ *
  * @package app
  */
 final class Config
 {
-    /**
-     * @param string|null $search
-     * @return string
-     */
-    public static function get($search = null): string
+    public static function get(?string $search = null): ?string
     {
         $config = include __DIR__ . '/../config.php';
         $parts = explode('.', $search);

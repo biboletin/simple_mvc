@@ -1,7 +1,7 @@
 <?php
 
     use Core\Csrf;
-use Core\Session;
+    use Core\Session;
 
 ?>
 <!doctype html>

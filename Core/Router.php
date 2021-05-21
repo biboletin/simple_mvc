@@ -12,14 +12,29 @@ use Core\Classes\Route;
 final class Router extends Route
 {
     /**
-     * Router constructor
-     * Call parent constructor
+     * Set GET Requests
      *
-     * @param Core\Request $request
+     * get('/', [Controller::class, 'method'])
+     * get('/', function(){ return view('directory.file')})
+     * get('/', 'directory.file')
+     *
+     * @param string $routeName
+     * @param $callback
      */
-    public function __construct(Request $request)
+    public function get(string $routeName, $callback): void
     {
-        parent::__construct($request);
+        $this->add('get', $routeName, $callback);
+    }
+
+    /**
+     * Set POST Requests
+     *
+     * @param string $routeName
+     * @param        $callback
+     */
+    public function post(string $routeName, $callback): void
+    {
+        $this->add('post', $routeName, $callback);
     }
 
     /**
@@ -34,10 +49,10 @@ final class Router extends Route
         $method = $url['method'];
         $params = $url['params'];
 
-        if (!class_exists($controller, true)) {
+        if (! class_exists($controller, true)) {
             Redirect::to('errors.404', 404);
         }
-        if (!method_exists($controller, $method)) {
+        if (! method_exists($controller, $method)) {
             Redirect::to('errors.404', 404);
         }
         if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
@@ -46,32 +61,30 @@ final class Router extends Route
     }
 
     /**
-     * Set GET Requests
+     * 1 Replace {variable} with actual url parameter
+     * example: /controller/method/{param} => /controller/method/4
      *
-     * @param string $routeName
-     * @param        $callback
+     * /controller/method/{param} from defined routes
+     *
+     * 2 Call Route()->resolve()
+     *
      */
-    public function get(string $routeName, $callback)
+    public function init(): void
     {
-        $this->add('get', $routeName, $callback);
-    }
+        $parts = explode('/', $this->getPath());
+        $routeFirst = implode('/', array_slice($parts, 1, 2));
 
-    /**
-     * Set POST Requests
-     *
-     * @param string $routeName
-     * @param        $callback
-     */
-    public function post(string $routeName, $callback)
-    {
-        $this->add('post', $routeName, $callback);
-    }
+        foreach ($this->routes[$this->getMethod()] as $path => $route) {
+            $currentKey = $this->routes[$this->getMethod()][$path];
+            $part = explode('/', $path);
+            $routeSecond = implode('/', array_slice($part, 1, 2));
+            $param = $part[3] ?? null;
 
-    /**
-     *
-     */
-    public function init()
-    {
+            if ($routeFirst === $routeSecond && $param !== null) {
+                $path = str_replace($param, $parts[3], $path);
+            }
+            $this->routes[$this->getMethod()][$path] = $currentKey;
+        }
         $this->resolve();
     }
 }

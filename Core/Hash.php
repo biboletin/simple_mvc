@@ -2,8 +2,6 @@
 
 namespace Core;
 
-use Core\Config;
-
 /**
  * Class Hash
  *
@@ -11,9 +9,6 @@ use Core\Config;
  */
 class Hash
 {
-    /**
-     * @var string
-     */
     private string $algorithm;
     /**
      * @var array<string, string, int>
@@ -35,8 +30,6 @@ class Hash
      * Hash string/password
      *
      * @param null $string
-     *
-     * @return string
      */
     public function hashit($string = null): string
     {
@@ -49,8 +42,6 @@ class Hash
     /**
      * @param null $string
      * @param null $hash
-     *
-     * @return bool
      */
     public function verify($string = null, $hash = null): bool
     {

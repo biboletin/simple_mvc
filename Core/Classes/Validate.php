@@ -17,17 +17,17 @@ final class Validate
     {
     }
 
-    public function controller($controller)
+    public function controller($controller): void
     {
     }
-    public function method($method)
+    public function method($method): void
     {
     }
-    public function params($params)
+    public function params($params): void
     {
     }
 
-    public function routes($routes)
+    public function routes($routes): void
     {
     }
 }

@@ -2,10 +2,14 @@
 
 namespace Core\Classes;
 
-use Core\Classes\DefaultController;
-use Core\Request;
 use Core\Redirect;
+use Core\Request;
 
+/**
+ * Class Route
+ *
+ * @package Core\Classes
+ */
 class Route
 {
     /**
@@ -21,29 +25,23 @@ class Route
      */
     protected array $routes;
     /**
-     * @var object
+     * @var object|Request
      */
     protected object $request;
     /**
      * @var string
      */
     protected string $uri;
-    /**
-     * @var array
-     */
-    protected array $params;
-
-    // protected string $controller;
 
     /**
      * Route constructor.
-     * @param Core\Request $request
+     *
+     * @param Request $request
      */
     public function __construct(Request $request)
     {
         $this->controllerName = (new DefaultController())->getDefaultController();
         $this->actionName = (new DefaultController())->getDefaultAction();
-        $this->params = [];
         $this->routes = [];
         $this->request = $request;
     }
@@ -55,49 +53,65 @@ class Route
      */
     protected function parseURL(): array
     {
-        $url = !empty(trim($this->request->get('url')))
-            ? $this->request->get('url')
-            : '/';
-        $params = [];
-
+        $url = ! empty(trim($this->request->get('url'))) ? $this->request->get('url') : '/';
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
         $stripped = array_map('strip_tags', $trimmed);
         $link = $stripped;
+        $controller = $this->getController($link);
+        $method = $this->getAction($link);
+        $param = $this->getParams(implode('/', $link));
 
-
-        if (!isset($link[1]) && !empty($link[0])) {
-            $this->actionName = $link[0];
-            unset($link[0]);
+        if ($this->getMethod() === 'post') {
+            $param = $this->request;
         }
-        if (isset($link[1])) {
-            $this->controllerName = $link[0];
-            $this->actionName = $link[1];
-            unset($link[0]);
-            unset($link[1]);
-        }
-        if (isset($link[2])) {
-            $params = array_values($link);
-            unset($link[0]);
-        }
-
-        $controller = $this->suffixController($this->controllerName);
-        $method = $this->actionName;
 
         return [
             'controller' => $controller,
             'method' => $method,
-            'params' => $params,
+            'params' => $param,
         ];
     }
+
+    /**
+     * @param array $url
+     *
+     * @return string
+     */
+    protected function getController(array $url): string
+    {
+        if (empty(array_filter($url))) {
+            return $this->suffixController($this->controllerName);
+        }
+        if (count($url) === 1) {
+            return $this->suffixController($this->controllerName);
+        }
+        return $this->suffixController($url[0]);
+    }
+
+    /**
+     * @param array $url
+     *
+     * @return string
+     */
+    protected function getAction(array $url): string
+    {
+        if (empty(array_filter($url))) {
+            return $this->actionName;
+        }
+        return trim(strip_tags($url[1]));
+    }
+
     /**
      * Add routes
      *
+     * add('/', [Controller::class, 'method'])
+     * add('/', function(){ return view('directory.file')})
+     * add('/', 'directory.file')
+     *
      * @param string $method GET|POST
      * @param string $route {controller}/{method}/{params}
-     * @param string|null $callbackAction Class, callback function, string(view)
-     *
-     * @return void
+     * @param string|array $callbackAction Class, callback function, string(view)
      */
     protected function add(string $method, string $route, $callbackAction): void
     {
@@ -111,31 +125,30 @@ class Route
     {
         $path = $this->getPath();
         $httpMethod = $this->getMethod();
-
         $callback = $this->routes[$httpMethod][$path] ?? false;
-        $params = $this->getParams($path);
+        $param = $this->getParams($path) ?? [];
+        if ($this->getMethod() === 'post') {
+            $param = $this->request;
+        }
 
         if ($callback === false) {
             Redirect::to('errors.404', 404);
         }
-        //
         if (is_string($callback)) {
             return view($callback);
         }
         if (is_array($callback) && ($this->checkClassExists($callback[0]))) {
             $class = new $callback[0]();
             $method = $callback[1];
-            return call_user_func_array([$class, $method], $params);
-        }
 
-        echo call_user_func($callback, $params);
+            return $class->$method($param);
+        }
+        echo call_user_func($callback, $param);
     }
 
     /**
      * Return HTTP method
      * GET|POST
-     *
-     * @return string
      */
     protected function getMethod(): string
     {
@@ -143,48 +156,30 @@ class Route
     }
 
     /**
-     * Get URI path
+     * Return url path
      *
-     * @return string
+     * @return string / or /controller/method/some/params
      */
     protected function getPath(): string
     {
         $path = server('request_uri') ?? '/';
         $position = strpos($path, '?');
 
-        if ($position === false) {
-            return $path;
-        }
-
-        return substr($path, 0, $position);
+        return ($position !== false) ? substr($path, 0, $position) : $path;
     }
 
-
     /**
-     * Get URI params
+     * Get URI param/s
      *
      * @param string $url
-     * @return void
+     *
+     * @return string
      */
-    protected function getParams($url)
+    protected function getParams(string $url): string
     {
-        $parts = explode('/', $this->getPath());
-        $routeFirst = implode('/', array_slice($parts, 1, 2));
-        
-        foreach ($this->routes[$this->getMethod()] as $path => $route) {
-            $currentKey = $this->routes[$this->getMethod()][$path];
-            $part = explode('/', $path);
-            $routeSecond = implode('/', array_slice($part, 1, 2));
-            $param = $part[3] ?? null;
-
-            if ($routeFirst === $routeSecond && $param !== null) {
-                error_log($this->getPath() . ' === ' . $path);
-                $path = str_replace($param, $parts[3], $path);
-            }
-            $this->routes[$this->getMethod()][$path] = $currentKey;
-            return $parts[3];
-        }
-// error_log(print_r($this->routes, true));
+        $explode = explode('/', $url);
+        $param = array_slice($explode, 3) ?? [];
+        return array_values($param)[0];
     }
 
     /**
@@ -194,7 +189,7 @@ class Route
      *
      * @return string
      */
-    protected function suffixController($controllerName = ''): string
+    protected function suffixController(string $controllerName = ''): string
     {
         return ucfirst(trim($controllerName)) . 'Controller';
     }
@@ -203,9 +198,10 @@ class Route
      * Check if class exists
      *
      * @param string $class
-     * @return mixed
+     *
+     * @return false|string
      */
-    protected function checkClassExists($class)
+    protected function checkClassExists(string $class)
     {
         if (class_exists($class)) {
             return $class;
@@ -217,6 +213,7 @@ class Route
      * Dump routes
      *
      * @param string|null $httpMethod GET, POST
+     *
      * @return array
      */
     public function dump(?string $httpMethod = null): array
@@ -228,13 +225,12 @@ class Route
     }
 
     /**
-     *
+     * Destructor
      */
     public function __destruct()
     {
-        $this->controllerName = 'Home';
-        $this->actionName = 'index';
-        $this->params = [];
+        $this->controllerName = '';
+        $this->actionName = '';
         $this->routes = [];
         unset($this->request);
     }

@@ -16,26 +16,24 @@ class Controller
     /**
      * @var object|View
      */
-    public object $view;
+    protected object $view;
     /**
      * Controllers base directory
-     *
-     * @var string
      */
-    private string $directory;
+    protected string $directory;
 
     /**
      * @var object|Session
      */
-    public object $session;
+    protected object $session;
     /**
      * @var object|Csrf
      */
-    public object $csrf;
+    protected object $csrf;
     /**
      * @var object|Hash
      */
-    public object $hash;
+    protected object $hash;
 
     /**
      * Controller constructor.
@@ -49,15 +47,6 @@ class Controller
         $this->hash = new Hash();
     }
 
-    /**
-     *
-     * @return void
-     */
-    public function redirectToLogin(): void
-    {
-        Redirect::to('admin/login');
-    }
-
     public function __destruct()
     {
         $this->directory = '';
@@ -65,5 +54,10 @@ class Controller
         unset($this->session);
         unset($this->csrf);
         unset($this->hash);
+    }
+
+    public function redirectToLogin(): void
+    {
+        Redirect::to('admin/login');
     }
 }

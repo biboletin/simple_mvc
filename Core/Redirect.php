@@ -7,11 +7,15 @@ namespace Core;
  *
  * @package Core
  */
-class Redirect
+final class Redirect
 {
     /**
+     * Redirect to page with http status
+     *
      * @param string $page
-     * @param int    $code
+     * @param integer $code default 200
+     *
+     * @return void
      */
     public static function to(string $page, int $code = 200): void
     {

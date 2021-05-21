@@ -7,12 +7,10 @@ namespace Core;
  *
  * @package Core
  */
-class View
+final class View
 {
     /**
      * Views base directory
-     *
-     * @var string
      */
     private string $viewsDirectory;
 
@@ -24,12 +22,13 @@ class View
         $this->viewsDirectory = __DIR__ . '/../App/Views/';
     }
 
+    public function __destruct()
+    {
+        $this->viewsDirectory = '';
+    }
+
     /**
-     *
-     * @param string $viewName
      * @param array<string>   $params
-     *
-     * @return string
      */
     public function set(string $viewName = 'error', array $params = []): string
     {
@@ -37,7 +36,7 @@ class View
         $data = (object) $params;
 
         ob_start();
-        if (!file_exists($view . '.php')) {
+        if (! file_exists($view . '.php')) {
             include $this->viewsDirectory . 'error.php';
         }
         if (file_exists($view . '.php')) {
@@ -49,18 +48,8 @@ class View
         exit;
     }
 
-    /**
-     * @param string $view
-     *
-     * @return string
-     */
     private function parseView(string $view): string
     {
         return $this->viewsDirectory . implode('/', explode('.', $view));
-    }
-
-    public function __destruct()
-    {
-        $this->viewsDirectory = '';
     }
 }

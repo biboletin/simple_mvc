@@ -6,7 +6,6 @@ use Core\Model;
 
 class AboutModel extends Model
 {
-
     /**
      * UserModel constructor.
      */
@@ -17,12 +16,12 @@ class AboutModel extends Model
 
     public function getAboutInfo(): array
     {
-        $sql = "SELECT 
+        $sql = 'SELECT 
                   about 
                 FROM
                   about 
                 ORDER BY id DESC 
-                LIMIT 1";
+                LIMIT 1';
         $result = $this->query($sql);
 
         return $result->fetch_assoc() ?? ['about' => ''];
@@ -30,13 +29,13 @@ class AboutModel extends Model
 
     public function insertUpdateAbout($about = null): bool
     {
-        $sql = "INSERT INTO about (`about`) 
+        $sql = 'INSERT INTO about (`about`) 
                     VALUES
                       (?) 
                       ON DUPLICATE KEY 
                       UPDATE 
-                        about = ?";
-        $stmt  = $this->prepare($sql);
+                        about = ?';
+        $stmt = $this->prepare($sql);
         $stmt->bind_param('ss', $about, $about);
 
         return $stmt->execute();

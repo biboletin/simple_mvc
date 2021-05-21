@@ -14,9 +14,13 @@
  * PHP Version 7.2
  *
  * @category Session_Handler
+ *
  * @package  Sessions
+ *
  * @author   Biboletin <biboletin87@gmail.com>
+ *
  * @license  MIT https://opensource.org/licenses/MIT
+ *
  * @link     https://github.com/biboletin/php
  */
 
@@ -27,12 +31,16 @@ namespace Core;
  * for more secure session variables
  *
  * @category Session_Handler
+ *
  * @package  Sessions
+ *
  * @author   Biboletin <biboletin87@gmail.com>
+ *
  * @license  MIT https://opensource.org/licenses/MIT
+ *
  * @link     https://github.com/biboletin/php
  */
-class Session
+final class Session
 {
     /**
      * Session constructor.
@@ -60,9 +68,6 @@ class Session
         $_SESSION = array_map('strip_tags', $_SESSION);
     }
 
-    /**
-     * @return object
-     */
     public function start(): object
     {
         return new self();
@@ -71,10 +76,7 @@ class Session
     /**
      * Adding session element
      *
-     * @param string $sessionKey
      * @param mixed $sessionValue
-     *
-     * @return string
      */
     public function set(string $sessionKey, $sessionValue): string
     {
@@ -88,10 +90,6 @@ class Session
 
     /**
      * Get session element by key
-     *
-     * @param string $sessionKey
-     *
-     * @return string
      */
     public function get(string $sessionKey): string
     {
@@ -99,11 +97,6 @@ class Session
         return $_SESSION[$key] ?? '';
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
     public function has(string $key): bool
     {
         return isset($_SESSION[$key]);
@@ -111,10 +104,6 @@ class Session
 
     /**
      * Remove session element
-     *
-     * @param string $sessionKey
-     *
-     * @return void
      */
     public function del(string $sessionKey): void
     {
@@ -134,8 +123,6 @@ class Session
 
     /**
      * Destroy session
-     *
-     * @return void
      */
     public function close(): void
     {

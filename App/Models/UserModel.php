@@ -11,16 +11,13 @@ use Core\Model;
  */
 class UserModel extends Model
 {
-
     /**
-     * @param string $username
-     *
      * @return array<string>
      */
     public function checkUsername(string $username): array
     {
-        $sql = "select id, password from users where `username` = ?";
-        $stmt  = $this->prepare($sql);
+        $sql = 'select id, password from users where `username` = ?';
+        $stmt = $this->prepare($sql);
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -29,18 +26,11 @@ class UserModel extends Model
         }
         return $result->fetch_assoc();
     }
-    /**
-     * @param string $username
-     * @param string $email
-     * @param string $password
-     *
-     * @return bool
-     */
     public function createNewUser(string $username, string $email, string $password): bool
     {
-        $sql = "insert into users(`username`, `email`, `password`) values(?, ?, ?)";
+        $sql = 'insert into users(`username`, `email`, `password`) values(?, ?, ?)';
 
-        $stmt  = $this->prepare($sql);
+        $stmt = $this->prepare($sql);
         $stmt->bind_param('sss', $username, $email, $password);
         return $stmt->execute();
     }
