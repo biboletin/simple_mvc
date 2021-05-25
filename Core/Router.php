@@ -55,7 +55,7 @@ final class Router extends Route
         if (! method_exists($controller, $method)) {
             Redirect::to('errors.404', 404);
         }
-        if (strpos($_SERVER['REQUEST_URI'], 'favicon.ico') === false) {
+        if (strpos(server('request_uri'), 'favicon.ico') === false) {
             return (new $controller())->$method($params);
         }
     }

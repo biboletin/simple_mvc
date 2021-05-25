@@ -126,7 +126,7 @@ class Route
         $path = $this->getPath();
         $httpMethod = $this->getMethod();
         $callback = $this->routes[$httpMethod][$path] ?? false;
-        $param = $this->getParams($path) ?? [];
+        $param = $this->getParams($path);
         if ($this->getMethod() === 'post') {
             $param = $this->request;
         }
@@ -175,7 +175,7 @@ class Route
      *
      * @return string
      */
-    protected function getParams(string $url): string
+    protected function getParams(string $url): ?string
     {
         $explode = explode('/', $url);
         $param = array_slice($explode, 3) ?? [];

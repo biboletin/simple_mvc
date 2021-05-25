@@ -57,6 +57,7 @@ final class Request
      */
     public function post(string $key): string
     {
+/*
         $token = null;
         if ($this->post->input('token') !== '') {
             $token = $this->post->input('token');
@@ -65,7 +66,7 @@ final class Request
             $this->redirect('errors.400', 400);
             return 'Invalid token!';
         }
-
+*/
         return $this->post->input($key);
     }
 

@@ -115,6 +115,8 @@ class AdminController extends Controller
             'id' => $request->post('id'),
             'name' => 'Mihail',
         ];
+//error_log(print_r($request, true));
+var_dump($request);
         return $this->view->set('admin.users', $user);
     }
 
