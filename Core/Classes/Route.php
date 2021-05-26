@@ -53,7 +53,9 @@ class Route
      */
     protected function parseURL(): array
     {
-        $url = ! empty(trim($this->request->get('url'))) ? $this->request->get('url') : '/';
+        $url = ! empty(trim($this->request->get('url'))) 
+            ? $this->request->get('url') 
+            : '/';
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
         $stripped = array_map('strip_tags', $trimmed);
@@ -149,6 +151,8 @@ class Route
     /**
      * Return HTTP method
      * GET|POST
+     *
+     * @return string
      */
     protected function getMethod(): string
     {
@@ -179,7 +183,7 @@ class Route
     {
         $explode = explode('/', $url);
         $param = array_slice($explode, 3) ?? [];
-        return array_values($param)[0];
+        return array_values($param)[0] ?? '';
     }
 
     /**

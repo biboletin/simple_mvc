@@ -8,7 +8,8 @@ use Core\Config;
 use Core\View;
 
 /**
- * Undocumented function
+ * @param string $param
+ * @return string
  */
 function config(string $param): string
 {
@@ -16,7 +17,7 @@ function config(string $param): string
 }
 
 /**
- * Undocumented function
+ * @param string $path
  */
 function assets(string $path): string
 {
@@ -25,22 +26,21 @@ function assets(string $path): string
 }
 
 /**
+ * @param string $view
  * @param array $data
+ *
+ * @return string
  */
 function view(string $view, array $data = []): string
 {
     return (new View())->set($view, $data);
 }
-/**
- * Server variables
- */
+
 function server(string $key): string
 {
     return $_SERVER[strtoupper(trim(strip_tags($key)))] ?? '';
 }
-/**
- * Undocumented function
- */
+
 function route(string $route): string
 {
     return config('app.url') . $route;

@@ -30,6 +30,9 @@ class AdminController extends Controller
      */
     public function auth(Request $request): void
     {
+
+error_log(print_r($request, true));
+
         $username = $request->post('username');
         $password = $request->post('password');
         $user = new UserModel();
@@ -111,12 +114,14 @@ class AdminController extends Controller
 
     public function users(Request $request): string
     {
+// error_log(print_r($request, true));
+error_log(print_r($request->all(), true));
+error_log($request->post('age'));
+error_log($request->post('id'));
         $user = [
-            'id' => $request->post('id'),
+            'id' => $request->post('age'),
             'name' => 'Mihail',
         ];
-//error_log(print_r($request, true));
-var_dump($request);
         return $this->view->set('admin.users', $user);
     }
 

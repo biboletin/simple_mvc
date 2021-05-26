@@ -23,6 +23,11 @@ final class Router extends Route
      */
     public function get(string $routeName, $callback): void
     {
+// $rut = preg_replace('/\//', '\\/', $routeName);
+// $rut = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[0-9a-z-]+)', $rut);
+// $rut = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $rut);
+// $rut = '/^' . $rut . '$/i';
+// error_log($rut);
         $this->add('get', $routeName, $callback);
     }
 
@@ -75,15 +80,15 @@ final class Router extends Route
         $routeFirst = implode('/', array_slice($parts, 1, 2));
 
         foreach ($this->routes[$this->getMethod()] as $path => $route) {
-            $currentKey = $this->routes[$this->getMethod()][$path];
+            $newPath = $path;
             $part = explode('/', $path);
             $routeSecond = implode('/', array_slice($part, 1, 2));
             $param = $part[3] ?? null;
 
             if ($routeFirst === $routeSecond && $param !== null) {
-                $path = str_replace($param, $parts[3], $path);
+                $newPath = str_replace($param, $parts[3], $path);
             }
-            $this->routes[$this->getMethod()][$path] = $currentKey;
+            $this->routes[$this->getMethod()][$newPath] = $route;
         }
         $this->resolve();
     }
