@@ -19,7 +19,8 @@
  * @param {*} options object: key -> value
  * @param {*} func callback функция
  */
-function ajax(options, func) {
+function ajax(options, func)
+{
     'use strict';
 
     var ajax = new XMLHttpRequest();
@@ -68,7 +69,7 @@ document.getElementById('btn').onclick = function () {
         data: {
             'name': document.getElementById('index').value
         }
-    }, function(response){
+    }, function (response) {
         console.log(response);
     });
 };

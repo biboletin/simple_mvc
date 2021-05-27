@@ -20,12 +20,14 @@ return [
     'mysql' => [
         /**
          * Driver
+         * Default mysql
+         * mysql for Eloquent
          *
          * mysql
          * mysqli
          * pdo
          */
-        'engine' => 'mysqli',
+        'engine' => 'mysql',
         /**
          * Host
          */
@@ -109,7 +111,7 @@ return [
         /**
          *
          */
-         'algorithm' => PASSWORD_DEFAULT,
+         'algorithm' => PASSWORD_BCRYPT,
         /**
          *
          */

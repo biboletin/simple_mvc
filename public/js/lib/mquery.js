@@ -2,29 +2,29 @@ var $;
 if ( typeof jQuery !== 'function' ) {
     $ = {}
 }
-(function() {
+(function () {
     $.anchors = {
         state: true,
-        tog: function() {
+        tog: function () {
             if ( $.anchors.state ) {
                 $.anchors.off();
             } else {
                 $.anchors.on();
             }
         },
-        off: function() {
+        off: function () {
             var anchors = document.getElementsByTagName('a');
             for ( let i = 0; i < anchors.length; i++ ) {
-                anchors[i].onclick = function() {
+                anchors[i].onclick = function () {
                     return false;
                 }
             }
             $.anchors.state = false;
         },
-        on: function() {
+        on: function () {
             var anchors = document.getElementsByTagName('a');
             for ( let i = 0; i < anchors.length; i++ ) {
-                anchors[i].onclick = function() {
+                anchors[i].onclick = function () {
                     return true;
                 }
             }
@@ -32,12 +32,12 @@ if ( typeof jQuery !== 'function' ) {
         }
     }
     $.measure = {
-        start: function(name) {
+        start: function (name) {
             $.measure.used[name] = {
                 start: Date.now()
             }
         },
-        end: function(name) {
+        end: function (name) {
             if ( $.measure.used[name] ) {
                 $.measure.used[name].end = Date.now();
                 return name + ': ' + ($.measure.used[name].end - $.measure.used[name].start);
@@ -47,13 +47,14 @@ if ( typeof jQuery !== 'function' ) {
         used: {}
     };
     $.fonts = {
-        swap: function(arr, el = document.body) { //[href, fontname, href, fontname...], el
+        swap: function (arr, el = document.body) {
+ //[href, fontname, href, fontname...], el
             if ( $.fonts.ram.fonts.length === 0 ) {
                 $.fonts.ram.fonts.push(getComputedStyle(el).fontFamily);
             }
             if ( (arr.length / 2) + 1 !== $.fonts.ram.fonts.length ) {
-                for ( let i = 0; i < arr.length; i+=2 ) {
-                    $.fonts.ram.fonts.push(arr[i+1]);
+                for ( let i = 0; i < arr.length; i += 2 ) {
+                    $.fonts.ram.fonts.push(arr[i + 1]);
                     $.crEl({
                         tag: 'link',
                         loc: document.head,
@@ -71,10 +72,10 @@ if ( typeof jQuery !== 'function' ) {
             fonts: []
         }
     };
-    $.cl = function(log) {
+    $.cl = function (log) {
         console.log(log);
     }
-    $.crElKids = function(props, l, log = false) {
+    $.crElKids = function (props, l, log = false) {
         let kidsArr = [];
         let tag = props.tag;
         delete props.tag;
@@ -84,7 +85,7 @@ if ( typeof jQuery !== 'function' ) {
                 tag: tag
             }
             for ( let p = 0; p < propKeys.length; p++ ) {
-                switch(propKeys[p]) {
+                switch (propKeys[p]) {
                     case 'click'://add all other events
                     case 'dblclick':
                     case 'mouseover':
@@ -100,9 +101,9 @@ if ( typeof jQuery !== 'function' ) {
                     case 'attr':
                         elObj['attr'] = [];
                         let arr = props[propKeys[p]];
-                        for ( let z = 0; z < arr.length; z+=2 ) {
+                        for ( let z = 0; z < arr.length; z += 2 ) {
                             let attr = arr[z];
-                            let val = arr[z+1][i];
+                            let val = arr[z + 1][i];
                             elObj['attr'].push(attr);
                             elObj['attr'].push(val);
                         }r
@@ -223,21 +224,21 @@ if ( typeof jQuery !== 'function' ) {
         }
     };
 
-    $.crEl = function( elInfo ) {
-        if ( elInfo === undefined ) { return console.log('no argument provided for $.crEl()'); }
+    $.crEl = function ( elInfo ) {
+        if ( elInfo === undefined ) {
+            return console.log('no argument provided for $.crEl()'); }
 
         if ( Array.isArray(elInfo) ) {
             for ( let i = 0; i < elInfo.length; i++ ) {
-                $.crEl( elInfo[i] );
+                $.crEl(elInfo[i]);
             }
             return;
         }
         //if its only text / text + loc
         if ( elInfo.tag === undefined ) {
-
             if ( elInfo.text !== undefined ) {
                 var text = document.createTextNode(elInfo.text);
-                    if ( elInfo.loc === undefined ) {
+                if ( elInfo.loc === undefined ) {
                     document.body.appendChild(text);
                 } else if ( typeof elInfo.loc === 'string' ) {
                     document.querySelector(elInfo.loc).appendChild(text);
@@ -263,8 +264,8 @@ if ( typeof jQuery !== 'function' ) {
                     el.innerHTML = elInfo[key];
                     break;
                 case 'attr':
-                    for ( let y = 0; y < elInfo[key].length; y+=2 ) {
-                       el.setAttribute( elInfo[key][y], elInfo[key][y+1] );
+                    for ( let y = 0; y < elInfo[key].length; y += 2 ) {
+                        el.setAttribute(elInfo[key][y], elInfo[key][y + 1]);
                     }
                     break;
                 case 'href':
@@ -278,7 +279,7 @@ if ( typeof jQuery !== 'function' ) {
                 case 'target':
                 case 'placeholder':
                 case 'title':
-                    el.setAttribute( key, elInfo[key] );
+                    el.setAttribute(key, elInfo[key]);
                     break;
                 case 'kids':
                     var kids = elInfo.kids;
@@ -286,9 +287,9 @@ if ( typeof jQuery !== 'function' ) {
                         kids = [kids];
                     }
                     for ( let y = 0; y < kids.length; y++ ) {
-                       let kid = kids[y];
+                        let kid = kids[y];
                           kid.loc = el;
-                       $.crEl(kid);
+                        $.crEl(kid);
                     }
             }
         }
@@ -360,7 +361,8 @@ if ( typeof jQuery !== 'function' ) {
 
         return el;
     };
-    $.buildCP = function (cont, fn) {//allmost
+    $.buildCP = function (cont, fn) {
+//allmost
         let cpListener = $.crEl({
             tag: 'span',
             loc: cont,
@@ -382,7 +384,7 @@ if ( typeof jQuery !== 'function' ) {
             }]
         });
 
-        cpListener.addEventListener('mousedown', function(e) {
+        cpListener.addEventListener('mousedown', function (e) {
             var mouse = {
                 top: e.offsetY,
                 left: e.offsetX
@@ -398,7 +400,8 @@ if ( typeof jQuery !== 'function' ) {
 
             document.addEventListener('mouseup', stopChangingColor);
 
-            function changeColor(e) {
+            function changeColor(e)
+            {
                 mouse = {top: e.offsetY,left: e.offsetX};
 
                 var hslBGColor = 'hsla(' + mouse.left + ", " + Math.floor(String(mouse.top / 1.5)) + "%, " + Math.floor(String(mouse.top / 1.5)) + '%, ' + opacity / 10 + ')';
@@ -410,7 +413,8 @@ if ( typeof jQuery !== 'function' ) {
                 }
             }
 
-            function stopChangingColor () {
+            function stopChangingColor()
+            {
                 cp.style.display = 'none';
 
                 cp.removeEventListener('mousemove', changeColor);
@@ -418,7 +422,8 @@ if ( typeof jQuery !== 'function' ) {
                 document.removeEventListener('mouseup', stopChangingColor);
             }
 
-            function setOpacity(e) {
+            function setOpacity(e)
+            {
                 $.pauseEvent(e);
 
                 if ( event.deltaY < 0 ) {
@@ -438,7 +443,7 @@ if ( typeof jQuery !== 'function' ) {
 
         return cpListener;
     };
-    $.move = function(els) {
+    $.move = function (els) {
         if ( !els.length || els.length === 1 ) {
             els = [els];
         }
@@ -457,12 +462,12 @@ if ( typeof jQuery !== 'function' ) {
                 el: el,
                 onEnd: onEnd
             });
-            
+
             el.addEventListener('mousedown', $.mqstartElementMovement);
         }
     };
     var moveRam = [{active: undefined}];
-    $.move = function(els, onEnd = false) {
+    $.move = function (els, onEnd = false) {
         if ( !els.length || els.length === 1 ) {
             els = [els];
         }
@@ -484,7 +489,7 @@ if ( typeof jQuery !== 'function' ) {
             el.addEventListener('mousedown', $.mqstartElementMovement);
         }
     };
-    $.mqstartElementMovement = function(e) {
+    $.mqstartElementMovement = function (e) {
         if ( this.classList.value.indexOf('resizing') !== -1 ) {
             return;
         }
@@ -504,7 +509,7 @@ if ( typeof jQuery !== 'function' ) {
         document.addEventListener('mousemove', $.mqmoveElement);
         document.addEventListener('mouseup', $.mqstopElementMovement);
     };
-    $.mqstopElementMovement = function(e) {
+    $.mqstopElementMovement = function (e) {
         document.removeEventListener('mouseup', $.mqstopElementMovement);
         document.removeEventListener('mousemove', $.mqmoveElement);
 
@@ -549,7 +554,7 @@ if ( typeof jQuery !== 'function' ) {
     //     document.removeEventListener('mouseup', $.mqstopElementMovement);
     //     document.removeEventListener('mousemove', $.mqmoveElement);
     // };
-    $.mqmoveElement = function(e) {
+    $.mqmoveElement = function (e) {
         $.pauseEvent(e);
         var top, left;
 
@@ -560,7 +565,7 @@ if ( typeof jQuery !== 'function' ) {
         pos.selector.style.left = left + 'px';
     };
     $.hovDom = {//depends on $.pauseEvent; works well with twokeysdown
-        tog: function(name, then, ignore) {
+        tog: function (name, then, ignore) {
             if ( name === undefined ) {
                 console.log($.help.new.hovDom);
                 return;
@@ -568,13 +573,13 @@ if ( typeof jQuery !== 'function' ) {
             if ( $.hovDom.ram.activeName === name) {
                 $.hovDom.stop(name);
                 if ( then ) {
-                    then( $.hovDom.ram[name].pickedEls, name, $.hovDom.curStartIndex);
+                    then($.hovDom.ram[name].pickedEls, name, $.hovDom.curStartIndex);
                 }
             } else {
                 $.hovDom.start(name, ignore);
             }
         },
-        start: function(name, ignore) {
+        start: function (name, ignore) {
             let ram = $.hovDom.ram;
             if ( !ram[name] ) {
                 ram[name] = {
@@ -605,7 +610,7 @@ if ( typeof jQuery !== 'function' ) {
             document.addEventListener('mousemove', $.hovDom.changeBorderOnHover);
             document.addEventListener('mousedown', $.hovDom.returnClickedElement);
         },
-        stop: function(name) {
+        stop: function (name) {
             document.removeEventListener('mousemove', $.hovDom.changeBorderOnHover);
             document.removeEventListener('mousedown', $.hovDom.returnClickedElement);
 
@@ -623,7 +628,7 @@ if ( typeof jQuery !== 'function' ) {
             lastElBord: undefined,
             curStartIndex: null
         },
-        changeBorderOnHover: function(e) {
+        changeBorderOnHover: function (e) {
             $.pauseEvent(e);
             let ram = $.hovDom.ram;
             let curEl = document.elementFromPoint(event.clientX, event.clientY);
@@ -638,7 +643,8 @@ if ( typeof jQuery !== 'function' ) {
                 ram.lastEl.style.border = '1px solid red;';
             }
 
-            if (ram.lastEl === curEl) { return; }
+            if (ram.lastEl === curEl) {
+                return; }
 
             ram.lastEl.style.border = ram.lastElBord;
             ram.lastEl = curEl;
@@ -646,7 +652,7 @@ if ( typeof jQuery !== 'function' ) {
 
             curEl.style.border = '1px solid red';
         },
-        returnClickedElement: function(e) {
+        returnClickedElement: function (e) {
             $.pauseEvent(e);
             let ram = $.hovDom.ram[$.hovDom.ram.activeName];
             let ignoredElements = ram.ignore;
@@ -672,17 +678,18 @@ if ( typeof jQuery !== 'function' ) {
         }
     }
 
-    function returnElInfoObj(el, e) {
-        let fullWidth = Number( getComputedStyle(el).width.replace('px', '') ) +
-            Number( getComputedStyle(el).paddingLeft.replace('px', '') ) +
-            Number( getComputedStyle(el).paddingRight.replace('px', '') ) +
-            Number( getComputedStyle(el).borderLeftWidth.replace('px', '') ) +
-            Number( getComputedStyle(el).borderRightWidth.replace('px', '') );
-        let fullHeight = Number( getComputedStyle(el).height.replace('px', '') ) +
-            Number( getComputedStyle(el).paddingTop.replace('px', '') ) +
-            Number( getComputedStyle(el).paddingBottom.replace('px', '') ) +
-            Number( getComputedStyle(el).borderTopWidth.replace('px', '') ) +
-            Number( getComputedStyle(el).borderBottomWidth.replace('px', '') );
+    function returnElInfoObj(el, e)
+    {
+        let fullWidth = Number(getComputedStyle(el).width.replace('px', '')) +
+            Number(getComputedStyle(el).paddingLeft.replace('px', '')) +
+            Number(getComputedStyle(el).paddingRight.replace('px', '')) +
+            Number(getComputedStyle(el).borderLeftWidth.replace('px', '')) +
+            Number(getComputedStyle(el).borderRightWidth.replace('px', ''));
+        let fullHeight = Number(getComputedStyle(el).height.replace('px', '')) +
+            Number(getComputedStyle(el).paddingTop.replace('px', '')) +
+            Number(getComputedStyle(el).paddingBottom.replace('px', '')) +
+            Number(getComputedStyle(el).borderTopWidth.replace('px', '')) +
+            Number(getComputedStyle(el).borderBottomWidth.replace('px', ''));
 
         return {
             w: fullWidth,
@@ -693,7 +700,7 @@ if ( typeof jQuery !== 'function' ) {
             left: el.getBoundingClientRect().left
         };
     }
-    $.resizable = function(els, dir = 'both') {
+    $.resizable = function (els, dir = 'both') {
         dir = typeof dir === 'string' ? dir.toLowerCase() : 'both';
 
         var ram = {
@@ -707,10 +714,10 @@ if ( typeof jQuery !== 'function' ) {
             }
             let info = {
                 cursorType: dir === 'width' ? 'ew-resize' :
-                            dir === 'height' ? 'ns-resize':
+                            dir === 'height' ? 'ns-resize' :
                                                 "nwse-resize"
             };
-            el.addEventListener('mousemove', function(e) {
+            el.addEventListener('mousemove', function (e) {
                 let z = info.dimensions;
 
 
@@ -719,8 +726,8 @@ if ( typeof jQuery !== 'function' ) {
                     z = info.dimensions;
                 }
 
-                let elTop = Number( this.style.top.replace('px', '') );
-                let elLeft = Number( this.style.left.replace('px', '') );
+                let elTop = Number(this.style.top.replace('px', ''));
+                let elLeft = Number(this.style.left.replace('px', ''));
 
                 console.log(elTop === z.top, elLeft === z.left);
                 console.log(elTop, z.top)
@@ -736,7 +743,7 @@ if ( typeof jQuery !== 'function' ) {
                 }
 
             });
-            el.addEventListener('mousedown', function(e) {
+            el.addEventListener('mousedown', function (e) {
                 e.stopPropagation();
                 info.dimensions = returnElInfoObj(el, e);
                 //determine whether el is clicked in bottom right corner - then start resizing
@@ -750,7 +757,8 @@ if ( typeof jQuery !== 'function' ) {
                 }
             });
 
-            function startElementResizing(e) {
+            function startElementResizing(e)
+            {
                 $.pauseEvent(e);
                 let dim = info.dimensions;
                 let addW = e.clientX - dim.ex;
@@ -763,7 +771,8 @@ if ( typeof jQuery !== 'function' ) {
                 el.style.height = newH + 'px';
             }
 
-            function stopElementResizing(e) {
+            function stopElementResizing(e)
+            {
                 document.removeEventListener('mousemove', startElementResizing);
                 document.removeEventListener('mouseup', stopElementResizing);
                 info.dimensions = returnElInfoObj(el, e);
@@ -823,9 +832,9 @@ if ( typeof jQuery !== 'function' ) {
    //          console.log(2)
    //      }]
    //  ]);
-    $.twoKeysDown = function(arr, log = false) {
+    $.twoKeysDown = function (arr, log = false) {
         var map = {};
-        onkeydown = onkeyup = function(e){
+        onkeydown = onkeyup = function (e) {
             e = e || event; // IE...
             map[e.key] = e.type == 'keydown';
             var mapKeys = Object.keys(map);
@@ -834,10 +843,11 @@ if ( typeof jQuery !== 'function' ) {
                 if (log) {
                     console.log(map);
                 }
-                if ( onlyOnce !== 0 ) { return; }
-                for ( let p = 0; p < arr.length; p+=3 ) {
-                    if ( map[ arr[p] ] && map[ arr[p+1] ] ) {
-                        arr[p+2](e);
+                if ( onlyOnce !== 0 ) {
+                    return; }
+                for ( let p = 0; p < arr.length; p += 3 ) {
+                    if ( map[ arr[p] ] && map[ arr[p + 1] ] ) {
+                        arr[p + 2](e);
 
                         onlyOnce++;
                     }
@@ -845,14 +855,18 @@ if ( typeof jQuery !== 'function' ) {
             }
         }
     };
-    $.pauseEvent = function(e) {
-        if(e.stopPropagation) e.stopPropagation();
-        if(e.preventDefault) e.preventDefault();
+    $.pauseEvent = function (e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
         e.cancelBubble = true;
         e.returnValue = false;
         return false;
     };
-     $.toClipBoard = function(string, log = false) {
+     $.toClipBoard = function (string, log = false) {
         var textArea = document.createElement('textarea');
             textArea.style.width = '100%';
             textArea.style.height = '100vh';
@@ -865,8 +879,8 @@ if ( typeof jQuery !== 'function' ) {
         if ( log ) {
             console.log('Text copied to clipboard:', string);
         }
-    };
-    $.noteBook = function(bookName, clear = false) {
+     };
+    $.noteBook = function (bookName, clear = false) {
             performance.mark('start');
 
         var bookName = bookName;
@@ -878,7 +892,8 @@ if ( typeof jQuery !== 'function' ) {
         }
         if ( bookName.toLowerCase() === 'code' ) {
             var dependencies = [ 'pauseEvent', 'toClipBoard', 'crEl', 'move', 'mqstartElementMovement', 'mqstopElementMovement', 'mqmoveElement', 'crElKids', 'noteBook'];
-            var combinedJsCode =`var $; if ( typeof jQuery !== 'function' ) { $ = {}; }\n`;
+            var combinedJsCode = `var $; if ( typeof jQuery !== 'function' ) {
+                $ = {}; }\n`;
 
             for ( let i = 0; i < dependencies.length; i++ ) {
                 combinedJsCode += '$.' + dependencies[i] + ' = ' + $[dependencies[i]].toString() + '\n';
@@ -898,13 +913,13 @@ if ( typeof jQuery !== 'function' ) {
                     id: 'notebook-ta',
                     style: 'width: 100%; height: 100%; resize: none; padding-top: 30px;',
                     text: books[bookName] ? books[bookName] : '',
-                    keydown: function(e) {
+                    keydown: function (e) {
                         if ( e.key === 'Enter' ) {
                             books[bookName] = this.value;
                             locStor.setItem('mquery-notebooks', JSON.stringify(books));
                         }
                     },
-                    fn: function() {
+                    fn: function () {
                         if ( clear ) {
                             var clearBookName = books;
                             delete clearBookName[bookName];
@@ -921,7 +936,7 @@ if ( typeof jQuery !== 'function' ) {
                             tag: 'span',
                             style: 'padding: 1px 3px; border-right: 1px solid gray; cursor: pointer; display: inline-block',
                             text: Object.keys(books),
-                            click: function(e) {
+                            click: function (e) {
                                 console.log('noo')
                                 var lastNotes = this.parentNode.parentNode.getElementsByTagName('textarea')[0].value;
                                 if ( this.textContent === bookName ) {
@@ -933,43 +948,43 @@ if ( typeof jQuery !== 'function' ) {
                                 this.parentNode.parentNode.remove();
                                 $.noteBook(this.textContent);
                             },
-                            mousedown: function(e) {
+                            mousedown: function (e) {
                                 $.pauseEvent(e);
                                 console.log(5)
                             }
                         },
                         Object.keys(books).length
                     ),
-                    fn: function(els) {
-                        var spans = els.parentNode.getElementsByTagName('span');
-                        for ( let i = 0; i < spans.length; i++ ) {
-                            let curBookName = spans[i].textContent;
-                            if ( curBookName === bookName ) {
-                                spans[i].classList.add('active');
-                            }
+                fn: function (els) {
+                    var spans = els.parentNode.getElementsByTagName('span');
+                    for ( let i = 0; i < spans.length; i++ ) {
+                        let curBookName = spans[i].textContent;
+                        if ( curBookName === bookName ) {
+                            spans[i].classList.add('active');
                         }
                     }
+                }
                 },
                 {
                     tag: 'style',
                     loc: document.head,
                     text: `
-                        #books-buttons span.active {
+                        #books - buttons span.active {
                             color: white;
                             background: black;
-                        }
-                        #notebook-ta::-webkit-scrollbar {
+                    }
+                        #notebook - ta::-webkit - scrollbar {
                             width: 5px;
-                        }#notebook-ta::-webkit-scrollbar-thumb {
-                            background: black;
-                        }
+                    }#notebook - ta::-webkit - scrollbar - thumb {
+                        background: black;
+                    }
                     `
                 }]
             })
         );
     };
 
-    $.distArr = function(arr) {
+    $.distArr = function (arr) {
         var obj = arr.reduce(function (acc, curr) {
             acc[curr] ? acc[curr]++ : acc[curr] = 1;
             return acc;
@@ -977,33 +992,40 @@ if ( typeof jQuery !== 'function' ) {
 
         return {arr: Object.keys(obj), info: obj};
     }
-    $.date = function() {
+    $.date = function () {
         var now = new Date;
 
         var day = now.getDate();
-        if ( day < 10 ) { day = "0" + day };
+        if ( day < 10 ) {
+            day = "0" + day };
 
         var month = now.getMonth() + 1;
-        if ( month < 10 ) { month = "0" + month };
+        if ( month < 10 ) {
+            month = "0" + month };
 
         var year = now.getFullYear();
 
         var seconds = now.getSeconds();
-        if ( seconds < 10 ) { seconds = "0" + seconds };
+        if ( seconds < 10 ) {
+            seconds = "0" + seconds };
 
         var minutes = now.getMinutes();
-        if ( minutes < 10 ) { minutes = "0" + minutes };
+        if ( minutes < 10 ) {
+            minutes = "0" + minutes };
 
         var hours = now.getHours();
-        if ( hours < 10 ) { hours = "0" + hours };
+        if ( hours < 10 ) {
+            hours = "0" + hours };
 
         var time = hours + ":" + minutes + ":" + seconds;
         var date = day + "/" + month + "/" + year;
 
         return {time: time, date: date, year: year, month: month, day: day, hour: hours, minute: minutes, second: seconds};
     };
-    $.nodeType = function(el) {
-        if (!el || el.length === 0) return 'n/a';
+    $.nodeType = function (el) {
+        if (!el || el.length === 0) {
+            return 'n/a';
+        }
 
         var arr = [];
         var nl = 0;
@@ -1022,15 +1044,22 @@ if ( typeof jQuery !== 'function' ) {
             return toStr(el.nodeType);
         }
 
-        function toStr(nt) {
-            if (nt === 1) return 'node';
-            if (nt === 3) return 'text';
-            if (nt === 8) return 'comment';
+        function toStr(nt)
+        {
+            if (nt === 1) {
+                return 'node';
+            }
+            if (nt === 3) {
+                return 'text';
+            }
+            if (nt === 8) {
+                return 'comment';
+            }
         }
     };
 
 
-    $.clearSelection = function() {
+    $.clearSelection = function () {
         if ( document.selection && document.selection.empty ) {
             document.selection.empty();
         } else if ( window.getSelection ) {
@@ -1038,14 +1067,14 @@ if ( typeof jQuery !== 'function' ) {
             sel.removeAllRanges();
         }
     };
-    $.docRdy = function(fn) {
+    $.docRdy = function (fn) {
         if (document.readyState === "complete" || document.readyState === "interactive") {
             setTimeout(fn, 1);
         } else {
             document.addEventListener("DOMContentLoaded", fn);
         }
     };
-    $.isInViewport = function(el) {
+    $.isInViewport = function (el) {
         var rect = el.getBoundingClientRect();
         var html = document.documentElement;
         return (
@@ -1056,11 +1085,11 @@ if ( typeof jQuery !== 'function' ) {
         );
     };
 
-    $.info = function(returnType = 'str') {
-       var module1 = {
-          options: [],
-          header: [navigator.platform, navigator.userAgent, navigator.appVersion, navigator.vendor, window.opera],
-          dataos: [
+    $.info = function (returnType = 'str') {
+        var module1 = {
+            options: [],
+            header: [navigator.platform, navigator.userAgent, navigator.appVersion, navigator.vendor, window.opera],
+            dataos: [
              { name: 'Windows Phone', value: 'Windows Phone', version: 'OS' },
              { name: 'Windows', value: 'Win', version: 'NT' },
              { name: 'iPhone', value: 'iPhone', version: 'OS' },
@@ -1072,8 +1101,8 @@ if ( typeof jQuery !== 'function' ) {
              { name: 'Macintosh', value: 'Mac', version: 'OS X' },
              { name: 'Linux', value: 'Linux', version: 'rv' },
              { name: 'Palm', value: 'Palm', version: 'PalmOS' }
-          ],
-          databrowser: [
+            ],
+            databrowser: [
              { name: 'Chrome', value: 'Chrome', version: 'Chrome' },
              { name: 'Firefox', value: 'Firefox', version: 'Firefox' },
              { name: 'Safari', value: 'Safari', version: 'Version' },
@@ -1081,16 +1110,16 @@ if ( typeof jQuery !== 'function' ) {
              { name: 'Opera', value: 'Opera', version: 'Opera' },
              { name: 'BlackBerry', value: 'CLDC', version: 'CLDC' },
              { name: 'Mozilla', value: 'Mozilla', version: 'Mozilla' }
-          ],
-          init: function () {
-             var agent = this.header.join(' '),
+            ],
+            init: function () {
+                var agent = this.header.join(' '),
                 os = this.matchItem(agent, this.dataos),
                 browser = this.matchItem(agent, this.databrowser);
 
-             return { os: os, browser: browser };
-          },
-          matchItem: function (string, data) {
-             var i = 0,
+                return { os: os, browser: browser };
+            },
+            matchItem: function (string, data) {
+                var i = 0,
                 j = 0,
                 html = '',
                 regex,
@@ -1099,66 +1128,68 @@ if ( typeof jQuery !== 'function' ) {
                 matches,
                 version;
 
-             for (i = 0; i < data.length; i += 1) {
-                regex = new RegExp(data[i].value, 'i');
-                match = regex.test(string);
-                if (match) {
-                   regexv = new RegExp(data[i].version + '[- /:;]([\\d._]+)', 'i');
-                   matches = string.match(regexv);
-                   version = '';
-                   if (matches) { if (matches[1]) { matches = matches[1]; } }
-                   if (matches) {
-                      matches = matches.split(/[._]+/);
-                      for (j = 0; j < matches.length; j += 1) {
-                         if (j === 0) {
-                            version += matches[j] + '.';
-                         } else {
-                            version += matches[j];
-                         }
-                      }
-                   } else {
-                      version = '0';
-                   }
-                   return {
-                      name: data[i].name,
-                      version: parseFloat(version)
-                   };
-                 }
-             }
-             return { name: 'unknown', version: 0 };
-          }
-       };
+                for (i = 0; i < data.length; i += 1) {
+                      regex = new RegExp(data[i].value, 'i');
+                      match = regex.test(string);
+                    if (match) {
+                        regexv = new RegExp(data[i].version + '[- /:;]([\\d._]+)', 'i');
+                        matches = string.match(regexv);
+                        version = '';
+                        if (matches) {
+                            if (matches[1]) {
+                                               matches = matches[1]; } }
+                        if (matches) {
+                            matches = matches.split(/[._]+/);
+                            for (j = 0; j < matches.length; j += 1) {
+                                if (j === 0) {
+                                    version += matches[j] + '.';
+                                } else {
+                                    version += matches[j];
+                                }
+                            }
+                        } else {
+                            version = '0';
+                        }
+                        return {
+                            name: data[i].name,
+                            version: parseFloat(version)
+                        };
+                    }
+                }
+                return { name: 'unknown', version: 0 };
+            }
+        };
 
-       var e = module1.init();
+        var e = module1.init();
 
-       var clientInfo = {
-          os: e.os.name + ' v' + e.os.version,
-          browser: e.browser.name + ' v' + e.browser.version,
+        var clientInfo = {
+            os: e.os.name + ' v' + e.os.version,
+            browser: e.browser.name + ' v' + e.browser.version,
 
-          dimensions: {
-             bodyWidth: getComputedStyle(document.body).width + 'px',
-             bodyHeight: getComputedStyle(document.body).height + 'px',
-             windowWidth: window.innerWidth + 'px',
-             windowHeight: window.innerHeight + 'px'
-          },
+            dimensions: {
+                bodyWidth: getComputedStyle(document.body).width + 'px',
+                bodyHeight: getComputedStyle(document.body).height + 'px',
+                windowWidth: window.innerWidth + 'px',
+                windowHeight: window.innerHeight + 'px'
+            },
 
-          navigator: {
-             userAgent: navigator.userAgent,
-             appVersion: navigator.appVersion,
-             platform: navigator.platform,
-             vendor: navigator.vendor
-          }
-       };
+            navigator: {
+                userAgent: navigator.userAgent,
+                appVersion: navigator.appVersion,
+                platform: navigator.platform,
+                vendor: navigator.vendor
+            }
+        };
 
 
-       if ( returnType === 'str' || returnType === 'string' || returnType === 'text') {
-          clientInfo = JSON.stringify(clientInfo, null, 4);
-       }
+        if ( returnType === 'str' || returnType === 'string' || returnType === 'text') {
+            clientInfo = JSON.stringify(clientInfo, null, 4);
+        }
 
-       return clientInfo;
+        return clientInfo;
     };
 
-    $.s = function(sel, context = document) {
+    $.s = function (sel, context = document) {
         if ( typeof context === 'string' ) {
             context = document.querySelector(context);
         }
@@ -1168,7 +1199,7 @@ if ( typeof jQuery !== 'function' ) {
 
         return el;
     }
-    $.ev = function(el, ev, fn) {
+    $.ev = function (el, ev, fn) {
         if ( !el.length ) {
             el.addEventListener(ev, fn);
         } else {
@@ -1177,10 +1208,10 @@ if ( typeof jQuery !== 'function' ) {
             }
         }
     }
-    $.tog = function(trig, tog) {
+    $.tog = function (trig, tog) {
         var display = getComputedStyle(tog).display;
         display = display === 'none' ? 'block' : display;
-        trig.addEventListener('click', function(e) {
+        trig.addEventListener('click', function (e) {
             var state = getComputedStyle(tog).display;
             if ( state === 'none' ) {
                 tog.style.display = display;
@@ -1190,12 +1221,12 @@ if ( typeof jQuery !== 'function' ) {
         });
     }
 
-    $.getCss = function(el, prop) {
+    $.getCss = function (el, prop) {
         return window.getComputedStyle(el)[prop];
     }
 
     //not yet!
-    $.findAndReplace = function(str, from, toNext) {
+    $.findAndReplace = function (str, from, toNext) {
         var regex = new RegExp(from,"g"),
             result, ind = [], endInd = [], finalArr = [];
 
@@ -1203,7 +1234,7 @@ if ( typeof jQuery !== 'function' ) {
             ind.push(result.index + from.length);
         }
         for ( let i = 0; i < ind.length; i++ ) {
-            endInd.push( str.indexOf(toNext, ind[i] + from.length) );
+            endInd.push(str.indexOf(toNext, ind[i] + from.length));
         }
         for ( let i = 0; i < ind.length; i++ ) {
             var cont = str.slice(ind[i], endInd[i]);

@@ -34,9 +34,9 @@ final class View
     /**
      * Set view
      * Delimiter .
-     * 
+     *
      * @param string $viewName page
-     * @param array $params Data 
+     * @param array $params Data
      * @return string
      */
     public function set(string $viewName = 'error', array $params = []): string

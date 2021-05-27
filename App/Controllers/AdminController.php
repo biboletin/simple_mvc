@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\AboutModel;
-use App\Models\UserModel;
+use App\Models\Users;
 use Core\Controller;
 use Core\Request;
 
@@ -30,20 +29,15 @@ class AdminController extends Controller
      */
     public function auth(Request $request): void
     {
-
-error_log(print_r($request, true));
-
         $username = $request->post('username');
         $password = $request->post('password');
-        $user = new UserModel();
-        $result = $user->checkUsername($username);
-        $userPass = ! empty($result) ? $result['password'] : '';
+        $users = Users::where('name', '=', $username)->get();
 
-        if ($this->hash->verify($password, $userPass)) {
+        if ($this->hash->verify($password, $users[0]->password)) {
             $this->session->set('loggedIn', true);
             $request->redirect('admin/dashboard');
         }
-        if (! $this->hash->verify($password, $userPass)) {
+        if (! $this->hash->verify($password, $users[0]->password)) {
             echo 'logged out';
 
             $this->redirectToLogin();
@@ -114,10 +108,10 @@ error_log(print_r($request, true));
 
     public function users(Request $request): string
     {
-// error_log(print_r($request, true));
-error_log(print_r($request->all(), true));
-error_log($request->post('age'));
-error_log($request->post('id'));
+        // error_log(print_r($request, true));
+        error_log(print_r($request->all(), true));
+        error_log($request->post('age'));
+        error_log($request->post('id'));
         $user = [
             'id' => $request->post('age'),
             'name' => 'Mihail',

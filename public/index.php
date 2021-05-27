@@ -4,6 +4,8 @@
 // https://gist.github.com/Nilpo/5449999
 
 include_once __DIR__ . '/../vendor/autoload.php';
+include_once __DIR__ . '/../bootstrap.php';
+
 use Core\Router;
 use Core\Request;
 use App\Controllers\HomeController;
@@ -20,7 +22,9 @@ $router->get('/admin/login', [AdminController::class, 'login']);
 $router->get('/admin/users/{id}', [AdminController::class, 'listUsers']);
 $router->post('/admin/users/', [AdminController::class, 'users']);
 $router->post('/admin/auth', [AdminController::class, 'auth']);
-// $router->get('/{controller}/{method}/{param}', [AdminController::class, 'users']);
+
+
+
 // echo var_dump($router->dump());
 $router->init();
 // */

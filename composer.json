@@ -17,7 +17,8 @@
   "autoload": {
     "psr-4": {
       "Core\\": "Core/",
-      "App\\": "App/"
+      "App\\": "App/",
+      "Database\\Migrations\\": "Database/Migrations/"
     },
     "files": [
       "Core/Helpers/functions.php"

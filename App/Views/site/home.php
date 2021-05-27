@@ -20,7 +20,7 @@
 </head>
 <body>
 <h1 class="text-center">
-    Home page of <?php echo $data[0];?>
+    Home page
 </h1>
 
 <script src="<?php echo assets('js/index.js')?>"></script>

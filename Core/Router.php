@@ -23,11 +23,11 @@ final class Router extends Route
      */
     public function get(string $routeName, $callback): void
     {
-// $rut = preg_replace('/\//', '\\/', $routeName);
-// $rut = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[0-9a-z-]+)', $rut);
-// $rut = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $rut);
-// $rut = '/^' . $rut . '$/i';
-// error_log($rut);
+        // $rut = preg_replace('/\//', '\\/', $routeName);
+        // $rut = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[0-9a-z-]+)', $rut);
+        // $rut = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $rut);
+        // $rut = '/^' . $rut . '$/i';
+        // error_log($rut);
         $this->add('get', $routeName, $callback);
     }
 

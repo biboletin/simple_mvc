@@ -53,8 +53,8 @@ class Route
      */
     protected function parseURL(): array
     {
-        $url = ! empty(trim($this->request->get('url'))) 
-            ? $this->request->get('url') 
+        $url = ! empty(trim($this->request->get('url')))
+            ? $this->request->get('url')
             : '/';
         $parse = rtrim($url, '/');
         $trimmed = array_map('trim', explode('/', $parse));
