@@ -12,7 +12,7 @@
   "minimum-stability": "dev",
   "require": {
       "php": ">=7.4.12",
-    "illuminate/database": "9.x-dev"
+    "illuminate/database": "^9"
   },
   "autoload": {
     "psr-4": {
