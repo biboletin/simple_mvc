@@ -11,7 +11,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-      "php": ">=7.4.12",
+      "php": ">=8.0.2",
     "illuminate/database": "^9"
   },
   "autoload": {
